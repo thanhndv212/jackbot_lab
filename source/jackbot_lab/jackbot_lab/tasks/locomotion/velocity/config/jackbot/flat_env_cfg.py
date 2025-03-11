@@ -70,11 +70,11 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         # Feet rewards
         self.rewards.feet_air_time.weight = 2.0
 
-        self.rewards.feet_air_time.params["threshold"] = 0.6
+        self.rewards.feet_air_time.params["threshold"] = 0.4
 
         self.rewards.feet_contact.weight = 0
 
-        self.rewards.feet_slide.weight = -0.1
+        self.rewards.feet_slide.weight = -0.05
 
         # Others
         self.rewards.joint_power.weight = 0
