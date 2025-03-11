@@ -44,6 +44,25 @@ class JackbotRewardsCfg(RewardsCfg):
         },
     )
 
+    # Penalize the deviation from the desired y-axis distance between the feet
+    knee_keep_distance = RewTerm(
+        func=mdp.feet_keep_distance,
+        weight=-0.8,
+        params={
+            "asset_cfg": SceneEntityCfg(
+                "robot", body_names="knee.*"
+            ),
+        },
+    )
+    
+    lowerleg_keep_distance = RewTerm(
+        func=mdp.feet_keep_distance,
+        weight=-0.8,
+        params={
+            "asset_cfg": SceneEntityCfg("robot", body_names="tibia.*"),
+        },
+    )
+
     # Penalize ankle joint limits
     dof_pos_limits = RewTerm(
         func=mdp.joint_pos_limits,
