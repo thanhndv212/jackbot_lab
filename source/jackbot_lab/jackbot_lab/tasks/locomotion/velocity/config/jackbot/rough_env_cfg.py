@@ -54,7 +54,7 @@ class JackbotRewardsCfg(RewardsCfg):
             ),
         },
     )
-    
+
     lowerleg_keep_distance = RewTerm(
         func=mdp.feet_keep_distance,
         weight=-0.8,
@@ -206,7 +206,7 @@ class JackbotRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
             "tibia.*",
             "shoulder.*",
             "elbow.*",
-            "hand_.*",
+            "hand.*",
         ]
 
         # ------------------------------Commands------------------------------
