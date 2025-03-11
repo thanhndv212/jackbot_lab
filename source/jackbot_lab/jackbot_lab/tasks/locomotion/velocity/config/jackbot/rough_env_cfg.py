@@ -182,7 +182,12 @@ class JackbotRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
 
         # ------------------------------Terminations------------------------------
         self.terminations.illegal_contact.params["sensor_cfg"].body_names = [
-            self.base_link_name
+            "pelvis.*",
+            "knee.*",
+            "tibia.*",
+            "shoulder.*",
+            "elbow.*",
+            "hand_.*",
         ]
 
         # ------------------------------Commands------------------------------
