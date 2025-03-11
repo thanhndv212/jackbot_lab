@@ -6,6 +6,8 @@ from isaaclab.actuators import ActuatorNetMLPCfg, DCMotorCfg, ImplicitActuatorCf
 from isaaclab.assets.articulation import ArticulationCfg
 from isaaclab.utils.assets import ISAACLAB_NUCLEUS_DIR
 from torch import pi
+
+deg_to_rad = pi / 180.0
 ##
 # Configuration - Actuators.
 ##
@@ -32,11 +34,11 @@ JACKBOT_CFG = ArticulationCfg(
     init_state=ArticulationCfg.InitialStateCfg(
         pos=(0.0, 0.0, 0.832),
         joint_pos={
-            ".*pitch_ankle_joint": -17.5 / pi,
-            ".*pitch_elbow_joint": 60.0 / pi,
-            ".*pitch_knee_joint": 30.0 / pi,
-            ".*pitch_hip_joint": -12.0 / pi,
-            ".*pitch_shoulder_joint": 15.0 / pi,
+            ".*pitch_ankle_joint": -17.5 * deg_to_rad,
+            ".*pitch_elbow_joint": 60.0 * deg_to_rad,
+            ".*pitch_knee_joint": 30.0 * deg_to_rad,
+            ".*pitch_hip_joint": -12.0 * deg_to_rad,
+            ".*pitch_shoulder_joint": 15.0 * deg_to_rad,
             ".*roll_ankle_joint": 0.0,
             ".*roll_hip_joint": 0.0,
             ".*roll_shoulder_joint": 0.0,
