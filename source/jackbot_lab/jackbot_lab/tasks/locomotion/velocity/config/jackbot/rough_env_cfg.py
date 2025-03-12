@@ -87,7 +87,9 @@ class JackbotRewardsCfg(RewardsCfg):
                     ".*_shoulder_joint",
                     ".*_elbow_joint",
                     ".*_knee_joint",
-                    ".*_waist_joint",],
+                    ".*_waist_joint",
+                    ".*_wrist_joint",
+                ],
             )
         },
     )
