@@ -154,7 +154,7 @@ def feet_keep_distance(
         root_to_body_1_b[:, 1] - root_to_body_2_b[:, 1]
     )
     rew = torch.where(
-        (feet_y_distance > 0.13 * 2) & (feet_y_distance < 0.16 * 2), 0, 1
+        (feet_y_distance > 0.13 * 2) & (feet_y_distance < 0.30 * 2), 0, 1
     )
     return rew
 
