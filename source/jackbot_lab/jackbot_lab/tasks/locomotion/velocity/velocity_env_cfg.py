@@ -118,7 +118,7 @@ class CommandsCfg:
             lin_vel_x=(-1.0, 1.0),
             lin_vel_y=(-1.0, 1.0),
             ang_vel_z=(-1.0, 1.0),
-            heading=(-math.pi, math.pi),
+            heading=(-math.pi / 4, math.pi / 4),
         ),
     )
 
@@ -394,6 +394,14 @@ class RewardsCfg:
     )
 
     # Joint penalties
+    def create_joint_deviation_l1_rewterm(self, attr_name, weight, joint_names_pattern):
+        rew_term = RewTerm(
+            func=mdp.joint_deviation_l1,
+            weight=weight,
+            params={"asset_cfg": SceneEntityCfg("robot", joint_names=joint_names_pattern)},
+        )
+        setattr(self, attr_name, rew_term)
+    
     joint_torques_l2 = RewTerm(
         func=mdp.joint_torques_l2,
         weight=0.0,
