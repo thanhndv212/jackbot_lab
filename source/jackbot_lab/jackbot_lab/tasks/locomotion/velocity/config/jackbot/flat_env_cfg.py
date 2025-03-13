@@ -42,7 +42,27 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.body_lin_acc_l2.weight = 0
 
         # Joint penalties
-        self.rewards.joint_deviation.weight = -0.05
+        self.rewards.joint_deviation.weight = -0.0
+        self.rewards.create_joint_deviation_l1_rewterm(
+            "joint_deviation_other_l1",
+            -0.2,
+            [
+                ".*_yaw_hip_joint",
+                ".*_roll_hip_joint",
+                ".*_yaw_knee_joint",
+                ".*_shoulder_joint",
+                ".*_wrist_joint",
+            ],
+        )
+        self.rewards.create_joint_deviation_l1_rewterm(
+            "joint_deviation_waist_l1", -0.4, ["yaw_waist_joint"]
+        )
+        self.rewards.create_joint_deviation_l1_rewterm(
+            "joint_deviation_elbow_l1", -0.05, [".*_pitch_elbow_joint"]
+        )
+        self.rewards.create_joint_deviation_l1_rewterm(
+            "joint_deviation_knee_l1", -0.1, [".*_pitch_knee_joint"]
+        )
 
         self.rewards.joint_acc_l2.weight = -1.0e-7
         self.rewards.joint_acc_l2.params["asset_cfg"] = SceneEntityCfg(
@@ -61,14 +81,14 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.contact_forces.weight = 0
 
         # Velocity-tracking rewards
-        self.rewards.track_lin_vel_xy_exp.weight = 1.0
+        self.rewards.track_lin_vel_xy_exp.weight = 2.0
         self.rewards.track_lin_vel_xy_exp.params["std"] = 0.5
 
         self.rewards.track_ang_vel_z_exp.weight = 2.0
         self.rewards.track_ang_vel_z_exp.params["std"] = 0.5
 
         # Feet rewards
-        self.rewards.feet_air_time.weight = 2.0
+        self.rewards.feet_air_time.weight = 1.0
 
         self.rewards.feet_air_time.params["threshold"] = 0.4
 
@@ -85,9 +105,10 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
             self.disable_zero_weight_rewards()
 
         # Commands
-        self.commands.base_velocity.ranges.lin_vel_x = (0.0, 0.1)
-        self.commands.base_velocity.ranges.lin_vel_y = (0.0, 0.0)
-        self.commands.base_velocity.ranges.ang_vel_z = (-0.0, 0.0)
+        self.commands.base_velocity.ranges.lin_vel_x = (0.0, 1.0)
+        self.commands.base_velocity.ranges.lin_vel_y = (-0.5, 0.5)
+        self.commands.base_velocity.ranges.ang_vel_z = (-0.5, 0.5)
+        self.commands.base_velocity.heading_command = True
 
         # If the weight of rewards is 0, set rewards to None
         if self.__class__.__name__ == "JackbotFlatEnvCfg":
