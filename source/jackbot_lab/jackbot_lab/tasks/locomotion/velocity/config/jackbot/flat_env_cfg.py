@@ -45,12 +45,12 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.joint_deviation.weight = -0.0
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_other_l1",
-            -0.2,
+            -0.5,
             [
                 ".*_yaw_hip_joint",
-                ".*_roll_hip_joint",
                 ".*_yaw_knee_joint",
                 ".*_shoulder_joint",
+                ".*_pitch_elbow_joint",
                 ".*_wrist_joint",
             ],
         )
@@ -58,19 +58,35 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
             "joint_deviation_waist_l1", -0.4, ["yaw_waist_joint"]
         )
         self.rewards.create_joint_deviation_l1_rewterm(
-            "joint_deviation_elbow_l1", -0.05, [".*_pitch_elbow_joint"]
-        )
-        self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_knee_l1", -0.1, [".*_pitch_knee_joint"]
         )
-
+        self.rewards.create_joint_deviation_l1_rewterm(
+            "joint_deviation_hip_l1",
+            -0.1,
+            [".*_pitch_hip_joint", ".*_roll_hip_joint"],
+        )
+        self.rewards.create_joint_deviation_l1_rewterm(
+            "joint_deviation_ankle_l1",
+            -0.1,
+            [".*_pitch_ankle_joint", ".*_roll_ankle_joint"],
+        )
         self.rewards.joint_acc_l2.weight = -1.0e-7
         self.rewards.joint_acc_l2.params["asset_cfg"] = SceneEntityCfg(
-            "robot", joint_names=[".*pitch_hip_.*", ".*pitch_knee_.*", ".*pitch_ankle_.*"]
+            "robot",
+            joint_names=[
+                # ".*_hip_.*",
+                # ".*_knee_.*",
+                ".*_ankle_.*",
+            ],
         )
         self.rewards.joint_torques_l2.weight = -1.5e-7
         self.rewards.joint_torques_l2.params["asset_cfg"] = SceneEntityCfg(
-            "robot", joint_names=[".*pitch_hip_.*", ".*pitch_knee_.*", ".*pitch_ankle_.*"]
+            "robot",
+            joint_names=[
+                ".*_hip_.*",
+                ".*_knee_.*",
+                # ".*_ankle_.*",
+            ],
         )
 
         # Action penalties
