@@ -60,19 +60,19 @@ class JackbotRewardsCfg(RewardsCfg):
         func=mdp.feet_keep_distance,
         weight=-0.8,
         params={
-            "dist_min": 0.25,
-            "dist_max": 0.5,
+            "dist_min": 0.2,
+            "dist_max": 0.35,
             "asset_cfg": SceneEntityCfg("robot", body_names="knee.*"),
         },
     )
 
-    lowerleg_keep_distance = RewTerm(
+    feet_keep_distance = RewTerm(
         func=mdp.feet_keep_distance,
         weight=-0.8,
         params={
-            "dist_min": 0.25,
-            "dist_max": 0.7,
-            "asset_cfg": SceneEntityCfg("robot", body_names="tibia.*"),
+            "dist_min": 0.2,
+            "dist_max": 0.45,
+            "asset_cfg": SceneEntityCfg("robot", body_names="foot.*"),
         },
     )
 
