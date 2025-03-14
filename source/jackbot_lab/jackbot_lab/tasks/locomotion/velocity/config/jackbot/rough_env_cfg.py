@@ -44,6 +44,17 @@ class JackbotRewardsCfg(RewardsCfg):
         },
     )
 
+    feet_contact = RewTerm(
+        func=mdp.feet_contact,
+        weight=0.0,
+        params={
+            "sensor_cfg": SceneEntityCfg(
+                "contact_forces", body_names=["foot.*"]
+            ),
+            "command_name": "base_velocity",
+            "expect_contact_num": 1,
+        },
+    )
     # Penalize the deviation from the desired y-axis distance between the feet
     knee_keep_distance = RewTerm(
         func=mdp.feet_keep_distance,
