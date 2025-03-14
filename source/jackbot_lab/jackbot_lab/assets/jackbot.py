@@ -35,7 +35,7 @@ JACKBOT_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.832),
         joint_pos={
             ".*pitch_ankle_joint": -17.5 * deg_to_rad,
-            ".*pitch_elbow_joint": 60.0 * deg_to_rad,
+            ".*pitch_elbow_joint": -60.0 * deg_to_rad,
             ".*pitch_knee_joint": 30.0 * deg_to_rad,
             ".*pitch_hip_joint": -12.0 * deg_to_rad,
             ".*pitch_shoulder_joint": 15.0 * deg_to_rad,
