@@ -100,10 +100,6 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.joint_power.weight = 0
         self.rewards.stand_still_without_cmd.weight = 0.0
 
-        # If the weight of rewards is 0, set rewards to None
-        if self.__class__.__name__ == "JackbotRoughEnvCfg":
-            self.disable_zero_weight_rewards()
-
         # Commands
         self.commands.base_velocity.ranges.lin_vel_x = (0.0, 1.0)
         self.commands.base_velocity.ranges.lin_vel_y = (-0.5, 0.5)
