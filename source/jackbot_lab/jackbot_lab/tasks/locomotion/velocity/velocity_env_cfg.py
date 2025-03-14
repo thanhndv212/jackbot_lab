@@ -489,7 +489,7 @@ class RewardsCfg:
         params={
             "sensor_cfg": SceneEntityCfg("contact_forces", body_names=""),
             "command_name": "base_velocity",
-            "expect_contact_num": 2,
+            "expect_contact_num": 1,
         },
     )
     stand_still_without_cmd = RewTerm(
