@@ -172,7 +172,7 @@ class JackbotRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         )
 
         # Action penalties
-        # self.rewards.action_rate_l2.weight = -0.005
+        self.rewards.action_rate_l2.weight = -0.005
         # UNUESD self.rewards.action_l2.weight = 0.0
 
         # Contact sensor
