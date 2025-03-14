@@ -28,7 +28,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.is_terminated.weight = -200
 
         # Root penalties
-        self.rewards.lin_vel_z_l2.weight = -0.005
+        self.rewards.lin_vel_z_l2.weight = -0.00
 
         self.rewards.ang_vel_xy_l2.weight = -0.05
         self.rewards.flat_orientation_l2.weight = -5.0
