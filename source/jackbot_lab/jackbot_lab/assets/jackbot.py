@@ -61,9 +61,9 @@ JACKBOT_CFG = ArticulationCfg(
                 ".*_elbow_joint": 100,  # 2
                 ".*_wrist_joint": 300,  # 2
                 ".*_waist_joint": 400,  # 2
-                ".*_hip_joint": 400,  # 6
-                ".*_knee_joint": 500,  # 4
-                ".*pitch_ankle_joint": 400,  # 2
+                ".*_hip_joint": 600,  # 6
+                ".*_knee_joint": 200,  # 4
+                ".*pitch_ankle_joint": 100,  # 2
                 ".*roll_ankle_joint": 50.0,  # 2
             },
             damping={
