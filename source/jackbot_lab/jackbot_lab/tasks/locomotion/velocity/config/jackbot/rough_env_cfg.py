@@ -60,9 +60,9 @@ class JackbotRewardsCfg(RewardsCfg):
         func=mdp.feet_keep_distance,
         weight=-0.8,
         params={
-            "asset_cfg": SceneEntityCfg(
-                "robot", body_names="knee.*"
-            ),
+            "dist_min": 0.25,
+            "dist_max": 0.5,
+            "asset_cfg": SceneEntityCfg("robot", body_names="knee.*"),
         },
     )
 
@@ -70,6 +70,8 @@ class JackbotRewardsCfg(RewardsCfg):
         func=mdp.feet_keep_distance,
         weight=-0.8,
         params={
+            "dist_min": 0.25,
+            "dist_max": 0.7,
             "asset_cfg": SceneEntityCfg("robot", body_names="tibia.*"),
         },
     )

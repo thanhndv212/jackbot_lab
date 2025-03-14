@@ -139,7 +139,10 @@ def feet_clock_vel(
 
 
 def feet_keep_distance(
-    env, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")
+    env,
+    dist_min: float,
+    dist_max: float,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
 ) -> torch.Tensor:
     """Penalize if the distance between the two feet about the y-axis is not in the range of 0.22m to 0.32m"""
     asset = env.scene[asset_cfg.name]
@@ -154,7 +157,7 @@ def feet_keep_distance(
         root_to_body_1_b[:, 1] - root_to_body_2_b[:, 1]
     )
     rew = torch.where(
-        (feet_y_distance > 0.13 * 2) & (feet_y_distance < 0.30 * 2), 0, 1
+        (feet_y_distance > dist_min) & (feet_y_distance < dist_max), 0, 1
     )
     return rew
 
