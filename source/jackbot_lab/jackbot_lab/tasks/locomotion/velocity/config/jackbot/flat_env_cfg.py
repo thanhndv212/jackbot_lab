@@ -61,7 +61,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_hip_l1",
-            -0.4,
+            -0.0,
             [".*_pitch_hip_joint",],
         )
         self.rewards.create_joint_deviation_l1_rewterm(
