@@ -52,18 +52,17 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
                 ".*_shoulder_joint",
                 ".*_pitch_elbow_joint",
                 ".*_wrist_joint",
+                ".*_roll_hip_joint", 
+                "yaw_waist_joint",
             ],
-        )
-        self.rewards.create_joint_deviation_l1_rewterm(
-            "joint_deviation_waist_l1", -0.4, ["yaw_waist_joint"]
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_knee_l1", -0.1, [".*_pitch_knee_joint"]
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_hip_l1",
-            -0.1,
-            [".*_pitch_hip_joint", ".*_roll_hip_joint"],
+            -0.4,
+            [".*_pitch_hip_joint",],
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_ankle_l1",
