@@ -103,7 +103,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.track_ang_vel_z_exp.params["std"] = 0.5
 
         # Feet rewards
-        self.rewards.feet_air_time.weight = 2.0
+        self.rewards.feet_air_time.weight = 10.0
 
         self.rewards.feet_air_time.params["threshold"] = 0.5
 
