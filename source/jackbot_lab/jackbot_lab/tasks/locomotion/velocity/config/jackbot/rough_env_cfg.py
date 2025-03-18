@@ -77,6 +77,28 @@ class JackbotRewardsCfg(RewardsCfg):
         },
     )
 
+    # Penalize the deviation from the desired orientation of the feet
+    right_foot_orientaion = RewTerm(
+        func=mdp.feet_orientation,
+        weight=-0.5,
+        params={
+            "sensor_cfg": SceneEntityCfg(
+                "contact_forces", body_names="footR"
+            ),
+            "asset_cfg": SceneEntityCfg("robot", body_names="footR"),
+        },
+    )
+    left_foot_orientaion = RewTerm(
+        func=mdp.feet_orientation,
+        weight=-0.5,
+        params={
+            "sensor_cfg": SceneEntityCfg(
+                "contact_forces", body_names="footL"
+            ),
+            "asset_cfg": SceneEntityCfg("robot", body_names="footL"),
+        },
+    )
+
     # Reward for the contact force on the feet during the gait cycle
     clock_frc = RewTerm(
         func=mdp.feet_clock_frc,
