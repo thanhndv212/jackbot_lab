@@ -133,7 +133,7 @@ class ActionsCfg:
         scale=0.5,
         use_default_offset=True,
         clip=None,
-        preserve_order=True,
+        # preserve_order=True,
     )
 
 
