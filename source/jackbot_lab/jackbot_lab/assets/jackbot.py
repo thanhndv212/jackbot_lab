@@ -52,28 +52,71 @@ JACKBOT_CFG = ArticulationCfg(
     ),
     soft_joint_pos_limit_factor=0.9,
     actuators={
-        "actuators": ImplicitActuatorCfg(
-            joint_names_expr=[".*"],
+        "hip_actuators": ImplicitActuatorCfg(
+            joint_names_expr=[
+                ".*_waist_joint",
+                ".*_roll_hip_joint",
+                ".*_pitch_hip_joint",
+                ".*_yaw_hip_joint",
+            ],
             effort_limit=2000,
             velocity_limit=100,
             stiffness={
-                ".*_shoulder_joint": 100,  # 6
-                ".*_elbow_joint": 100,  # 2
-                ".*_wrist_joint": 300,  # 2
-                ".*_waist_joint": 400,  # 2
-                ".*_hip_joint": 600,  # 6
-                ".*_knee_joint": 200,  # 4
-                ".*pitch_ankle_joint": 100,  # 2
+                ".*_waist_joint": 300.0,
+                ".*_roll_hip_joint": 300.0,  # 2
+                ".*_pitch_hip_joint": 1000.0,  # 2
+                ".*_yaw_hip_joint": 300.0,  # 2
+            },
+            damping={
+                ".*_waist_joint": 5.0,
+                ".*_roll_hip_joint": 5.0,  # 2
+                ".*_pitch_hip_joint": 5.0,  # 2
+                ".*_yaw_hip_joint": 5.0,  # 2
+            },
+        ),
+        "knee_actuators": ImplicitActuatorCfg(
+            joint_names_expr=[
+                ".*_knee_joint",
+            ],
+            effort_limit=300,
+            velocity_limit=10,
+            stiffness={
+                ".*_knee_joint": 200.0,  # 4
+            },
+            damping={
+                ".*_knee_joint": 5.0,  # 4
+            },
+        ),
+        "ankle_actuators": ImplicitActuatorCfg(
+            joint_names_expr=[".*pitch_ankle_joint", ".*roll_ankle_joint"],
+            effort_limit=1000,
+            velocity_limit=10,
+            stiffness={
+                ".*pitch_ankle_joint": 500.0,  # 2
                 ".*roll_ankle_joint": 50.0,  # 2
             },
             damping={
-                ".*_shoulder_joint": 5,  # 6
-                ".*_elbow_joint": 5,  # 2
-                ".*_wrist_joint": 5,  # 2
-                ".*_waist_joint": 5,  # 2
-                ".*_hip_joint": 5,  # 6
-                ".*_knee_joint": 5,  # 4
-                ".*_ankle_joint": 5,  # 4
+                ".*pitch_ankle_joint": 2.0,  # 2
+                ".*roll_ankle_joint": 2.0,  # 2
+            },
+        ),
+        "arm_actuators": ImplicitActuatorCfg(
+            joint_names_expr=[
+                ".*_shoulder_joint",
+                ".*_elbow_joint",
+                ".*_wrist_joint",
+            ],
+            effort_limit=100,
+            velocity_limit=10,
+            stiffness={
+                ".*_shoulder_joint": 50.0,  # 6
+                ".*_elbow_joint": 50.0,  # 2
+                ".*_wrist_joint": 50.0,  # 2
+            },
+            damping={
+                ".*_shoulder_joint": 10.0,  # 6
+                ".*_elbow_joint": 10.0,  # 2
+                ".*_wrist_joint": 10.0,  # 2
             },
         ),
     },
