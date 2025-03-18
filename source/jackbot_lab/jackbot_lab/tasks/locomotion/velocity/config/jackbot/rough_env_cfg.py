@@ -62,7 +62,7 @@ class JackbotRewardsCfg(RewardsCfg):
         weight=-0.8,
         params={
             "dist_min": 0.2,
-            "dist_max": 0.35,
+            "dist_max": 0.5,
             "asset_cfg": SceneEntityCfg("robot", body_names="knee.*"),
         },
     )
@@ -72,7 +72,7 @@ class JackbotRewardsCfg(RewardsCfg):
         weight=-0.8,
         params={
             "dist_min": 0.2,
-            "dist_max": 0.45,
+            "dist_max": 0.6,
             "asset_cfg": SceneEntityCfg("robot", body_names="foot.*"),
         },
     )
