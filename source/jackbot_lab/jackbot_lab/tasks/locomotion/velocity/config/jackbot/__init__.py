@@ -11,7 +11,7 @@ from . import agents
 
 gym.register(
     id="Isaac-Velocity-Rough-Jackbot-v0",
-    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    entry_point="jackbot_lab.envs:BipedalManagerBasedRLEnv",
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": f"{__name__}.rough_env_cfg:JackbotRoughEnvCfg",
@@ -21,7 +21,7 @@ gym.register(
 
 gym.register(
     id="Isaac-Velocity-Flat-Jackbot-v0",
-    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    entry_point="jackbot_lab.envs:BipedalManagerBasedRLEnv",
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": f"{__name__}.flat_env_cfg:JackbotFlatEnvCfg",

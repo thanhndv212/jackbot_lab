@@ -3,6 +3,7 @@
 
 import isaaclab_tasks.manager_based.locomotion.velocity.mdp as mdp
 from isaaclab.managers import RewardTermCfg as RewTerm
+from isaaclab.managers import ObservationTermCfg as ObsTerm
 from isaaclab.managers import SceneEntityCfg
 from isaaclab.utils import configclass
 
@@ -76,6 +77,27 @@ class JackbotRewardsCfg(RewardsCfg):
         },
     )
 
+    # Reward for the contact force on the feet during the gait cycle
+    clock_frc = RewTerm(
+        func=mdp.feet_clock_frc,
+        weight=1.0,
+        params={
+            "sensor_cfg": SceneEntityCfg(
+                "contact_forces", body_names="foot.*"
+            ),
+            "asset_cfg": SceneEntityCfg("robot", body_names="foot.*"),
+        },
+    )
+
+    # Reward for the velocity of the feet during the gait cycle
+    clock_vel = RewTerm(
+        func=mdp.feet_clock_vel,
+        weight=1.0,
+        params={
+            "asset_cfg": SceneEntityCfg("robot", body_names="foot.*"),
+        },
+    )
+
     # Penalize ankle joint limits
     dof_pos_limits = RewTerm(
         func=mdp.joint_pos_limits,
@@ -110,6 +132,7 @@ class JackbotRewardsCfg(RewardsCfg):
 
 @configclass
 class JackbotRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
+    gait_step_num: int = 50
     rewards: JackbotRewardsCfg = JackbotRewardsCfg()
 
     base_link_name = "pelvis"
@@ -213,6 +236,9 @@ class JackbotRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         # If the weight of rewards is 0, set rewards to None
         if self.__class__.__name__ == "JackbotRoughEnvCfg":
             self.disable_zero_weight_rewards()
+
+        # ------------------------------ Observations ----------------------------
+        self.observations.policy.gait_phase = ObsTerm(func=mdp.gait_phase)
 
         # ------------------------------Terminations------------------------------
         self.terminations.illegal_contact.params["sensor_cfg"].body_names = [
