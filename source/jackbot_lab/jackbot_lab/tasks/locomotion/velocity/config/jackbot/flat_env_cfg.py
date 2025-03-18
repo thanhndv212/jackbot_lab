@@ -33,7 +33,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.ang_vel_xy_l2.weight = -0.05
         self.rewards.flat_orientation_l2.weight = -5.0
 
-        self.rewards.base_height_l2.weight = -0.005
+        self.rewards.base_height_l2.weight = -0.05
         self.rewards.base_height_l2.params["target_height"] = 0.832
         self.rewards.base_height_l2.params["asset_cfg"].body_names = [
             self.base_link_name
@@ -103,7 +103,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.track_ang_vel_z_exp.params["std"] = 0.5
 
         # Feet rewards
-        self.rewards.feet_air_time.weight = 10.0
+        self.rewards.feet_air_time.weight = 1.0
 
         self.rewards.feet_air_time.params["threshold"] = 0.5
 
