@@ -133,6 +133,7 @@ class ActionsCfg:
         scale=0.5,
         use_default_offset=True,
         clip=None,
+        debug_vis=True,
         # preserve_order=True,
     )
 
