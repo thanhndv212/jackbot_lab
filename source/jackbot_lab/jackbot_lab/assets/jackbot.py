@@ -78,10 +78,10 @@ JACKBOT_CFG = ArticulationCfg(
             joint_names_expr=[
                 ".*_knee_joint",
             ],
-            effort_limit=300,
-            velocity_limit=10,
+            effort_limit=1000,
+            velocity_limit=100,
             stiffness={
-                ".*_knee_joint": 200.0,  # 4
+                ".*_knee_joint": 1000.0,  # 4
             },
             damping={
                 ".*_knee_joint": 5.0,  # 4
@@ -89,10 +89,10 @@ JACKBOT_CFG = ArticulationCfg(
         ),
         "ankle_actuators": ImplicitActuatorCfg(
             joint_names_expr=[".*pitch_ankle_joint", ".*roll_ankle_joint"],
-            effort_limit=1000,
+            effort_limit=100,
             velocity_limit=10,
             stiffness={
-                ".*pitch_ankle_joint": 500.0,  # 2
+                ".*pitch_ankle_joint": 50.0,  # 2
                 ".*roll_ankle_joint": 50.0,  # 2
             },
             damping={
