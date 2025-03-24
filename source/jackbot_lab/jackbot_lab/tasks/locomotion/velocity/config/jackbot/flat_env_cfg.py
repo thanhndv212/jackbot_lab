@@ -47,10 +47,10 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.body_lin_acc_l2.weight = 0
 
         # Joint penalties
-        self.rewards.joint_deviation.weight = -0.1
+        self.rewards.joint_deviation.weight = -0.0
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_other_l1",
-            -0.0,
+            -0.5,
             [
                 ".*_yaw_hip_joint",
                 ".*_yaw_knee_joint",
@@ -62,16 +62,16 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
             ],
         )
         self.rewards.create_joint_deviation_l1_rewterm(
-            "joint_deviation_knee_l1", -0.0, [".*_pitch_knee_joint"]
+            "joint_deviation_knee_l1", -0.01, [".*_pitch_knee_joint"]
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_hip_l1",
-            -0.0,
+            -0.01,
             [".*_pitch_hip_joint",],
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_ankle_l1",
-            -0.0,
+            -0.05,
             [".*_pitch_ankle_joint", ".*_roll_ankle_joint"],
         )
         # self.rewards.joint_acc_l2.weight = -1.0e-7
