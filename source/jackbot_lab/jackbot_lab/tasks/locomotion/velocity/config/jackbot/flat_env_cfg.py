@@ -95,7 +95,15 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
                 # ".*_ankle_.*",
             ],
         )
-
+        self.rewards.joint_vel_l2.weight = -1.0e-3
+        self.rewards.joint_vel_l2.params["asset_cfg"] = SceneEntityCfg(
+            "robot",
+            joint_names=[
+                # ".*_pitch_hip_.*",
+                ".*_pitch_knee_.*",
+                ".*_ankle_.*",
+            ],
+        )
         # Action penalties
         self.rewards.action_rate_l2.weight = -0.00
 
