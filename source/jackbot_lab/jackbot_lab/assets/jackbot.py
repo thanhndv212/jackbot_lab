@@ -64,13 +64,13 @@ JACKBOT_CFG = ArticulationCfg(
             stiffness={
                 ".*_waist_joint": 300.0,
                 ".*_roll_hip_joint": 300.0,  # 2
-                ".*_pitch_hip_joint": 1000.0,  # 2
+                ".*_pitch_hip_joint": 300.0,  # 2
                 ".*_yaw_hip_joint": 300.0,  # 2
             },
             damping={
                 ".*_waist_joint": 5.0,
                 ".*_roll_hip_joint": 5.0,  # 2
-                ".*_pitch_hip_joint": 5.0,  # 2
+                ".*_pitch_hip_joint": 20.0,  # 2
                 ".*_yaw_hip_joint": 5.0,  # 2
             },
         ),
@@ -81,10 +81,10 @@ JACKBOT_CFG = ArticulationCfg(
             effort_limit=1000,
             velocity_limit=100,
             stiffness={
-                ".*_knee_joint": 1000.0,  # 4
+                ".*_knee_joint": 200.0,  # 4
             },
             damping={
-                ".*_knee_joint": 5.0,  # 4
+                ".*_knee_joint": 12.0,  # 4
             },
         ),
         "ankle_actuators": ImplicitActuatorCfg(
@@ -96,8 +96,8 @@ JACKBOT_CFG = ArticulationCfg(
                 ".*roll_ankle_joint": 50.0,  # 2
             },
             damping={
-                ".*pitch_ankle_joint": 2.0,  # 2
-                ".*roll_ankle_joint": 2.0,  # 2
+                ".*pitch_ankle_joint": 10.0,  # 2
+                ".*roll_ankle_joint": 10.0,  # 2
             },
         ),
         "arm_actuators": ImplicitActuatorCfg(
