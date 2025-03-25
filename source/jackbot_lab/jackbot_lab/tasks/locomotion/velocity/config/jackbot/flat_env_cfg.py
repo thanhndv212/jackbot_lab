@@ -41,8 +41,8 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
 
         self.rewards.flat_orientation_l2.weight = -5.0
 
-        self.rewards.base_height_l2.weight = -0.5
-        self.rewards.base_height_l2.params["target_height"] = 0.83
+        self.rewards.base_height_l2.weight = -0.1
+        self.rewards.base_height_l2.params["target_height"] = 0.82
 
         self.rewards.body_lin_acc_l2.weight = 0
 
