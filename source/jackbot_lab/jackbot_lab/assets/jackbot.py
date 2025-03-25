@@ -107,11 +107,11 @@ JACKBOT_CFG = ArticulationCfg(
                 ".*_wrist_joint",
             ],
             effort_limit=100,
-            velocity_limit=10,
+            velocity_limit=100,
             stiffness={
                 ".*_shoulder_joint": 50.0,  # 6
-                ".*_elbow_joint": 50.0,  # 2
-                ".*_wrist_joint": 50.0,  # 2
+                ".*_elbow_joint": 10.0,  # 2
+                ".*_wrist_joint": 10.0,  # 2
             },
             damping={
                 ".*_shoulder_joint": 10.0,  # 6
