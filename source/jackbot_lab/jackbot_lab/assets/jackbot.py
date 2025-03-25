@@ -59,18 +59,18 @@ JACKBOT_CFG = ArticulationCfg(
                 ".*_pitch_hip_joint",
                 ".*_yaw_hip_joint",
             ],
-            effort_limit=2000,
+            effort_limit=300,
             velocity_limit=100,
             stiffness={
-                ".*_waist_joint": 300.0,
-                ".*_roll_hip_joint": 300.0,  # 2
-                ".*_pitch_hip_joint": 300.0,  # 2
-                ".*_yaw_hip_joint": 300.0,  # 2
+                ".*_waist_joint": 200.0,
+                ".*_roll_hip_joint": 200.0,  # 2
+                ".*_pitch_hip_joint": 200.0,  # 2
+                ".*_yaw_hip_joint": 200.0,  # 2
             },
             damping={
                 ".*_waist_joint": 5.0,
                 ".*_roll_hip_joint": 5.0,  # 2
-                ".*_pitch_hip_joint": 20.0,  # 2
+                ".*_pitch_hip_joint": 5.0,  # 2
                 ".*_yaw_hip_joint": 5.0,  # 2
             },
         ),
