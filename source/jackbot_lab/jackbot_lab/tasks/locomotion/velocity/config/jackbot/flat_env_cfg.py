@@ -62,7 +62,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
             ],
         )
         self.rewards.create_joint_deviation_l1_rewterm(
-            "joint_deviation_knee_l1", -0.01, [".*_pitch_knee_joint"]
+            "joint_deviation_knee_l1", -0.1, [".*_pitch_knee_joint"]
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_hip_l1",
@@ -71,10 +71,9 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_ankle_l1",
-            -0.05,
+            -0.1,
             [".*_pitch_ankle_joint", ".*_roll_ankle_joint"],
         )
-        # self.rewards.joint_acc_l2.weight = -1.0e-7
         self.rewards.joint_acc_l2.weight = -1.25e-7
 
         self.rewards.joint_acc_l2.params["asset_cfg"] = SceneEntityCfg(
@@ -85,7 +84,6 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
                 ".*_ankle_.*",
             ],
         )
-        # self.rewards.joint_torques_l2.weight = -1.5e-7
         self.rewards.joint_torques_l2.weight = -1.5e-7
         self.rewards.joint_torques_l2.params["asset_cfg"] = SceneEntityCfg(
             "robot",
