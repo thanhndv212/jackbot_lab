@@ -36,7 +36,7 @@ JACKBOT_CFG = ArticulationCfg(
         joint_pos={
             ".*pitch_ankle_joint": -17.5 * deg_to_rad,
             ".*pitch_elbow_joint": -60.0 * deg_to_rad,
-            ".*pitch_knee_joint": 30.0 * deg_to_rad,
+            ".*pitch_knee_joint": 45.0 * deg_to_rad,
             ".*pitch_hip_joint": -12.0 * deg_to_rad,
             ".*pitch_shoulder_joint": 15.0 * deg_to_rad,
             ".*roll_ankle_joint": 0.0,
@@ -59,68 +59,71 @@ JACKBOT_CFG = ArticulationCfg(
                 ".*_pitch_hip_joint",
                 ".*_yaw_hip_joint",
             ],
-            effort_limit=300,
-            velocity_limit=100,
+            effort_limit=180,
+            velocity_limit=5,
             stiffness={
-                ".*_waist_joint": 200.0,
-                ".*_roll_hip_joint": 200.0,  # 2
-                ".*_pitch_hip_joint": 200.0,  # 2
-                ".*_yaw_hip_joint": 200.0,  # 2
+                ".*_waist_joint": 150.0,
+                ".*_roll_hip_joint": 150.0,
+                ".*_pitch_hip_joint": 150.0,
+                ".*_yaw_hip_joint": 150.0,
             },
             damping={
-                ".*_waist_joint": 5.0,
-                ".*_roll_hip_joint": 5.0,  # 2
-                ".*_pitch_hip_joint": 5.0,  # 2
-                ".*_yaw_hip_joint": 5.0,  # 2
+                ".*_waist_joint": 8.0,
+                ".*_roll_hip_joint": 8.0,
+                ".*_pitch_hip_joint": 8.0,
+                ".*_yaw_hip_joint": 8.0,
             },
         ),
+        
         "knee_actuators": ImplicitActuatorCfg(
-            joint_names_expr=[
-                ".*_knee_joint",
-            ],
-            effort_limit=120,
+            joint_names_expr=[".*_knee_joint"],
+            effort_limit=90,
             velocity_limit=5,
             stiffness={
-                ".*_knee_joint": 200.0,  # 4
+                ".*_knee_joint": 150.0,
             },
             damping={
-                ".*_knee_joint": 20.0,  # 4
+                ".*_knee_joint": 10.0,
             },
         ),
+        
         "ankle_actuators": ImplicitActuatorCfg(
-            joint_names_expr=[".*pitch_ankle_joint", ".*roll_ankle_joint"],
-            effort_limit=20,
+            joint_names_expr=[
+                ".*pitch_ankle_joint",
+                ".*roll_ankle_joint",
+            ],
+            effort_limit=45,
             velocity_limit=5,
             stiffness={
-                ".*pitch_ankle_joint": 50.0,  # 2
-                ".*roll_ankle_joint": 50.0,  # 2
+                ".*pitch_ankle_joint": 50.0,
+                ".*roll_ankle_joint": 50.0,
             },
             damping={
-                ".*pitch_ankle_joint": 10.0,  # 2
-                ".*roll_ankle_joint": 10.0,  # 2
+                ".*pitch_ankle_joint": 10.0,
+                ".*roll_ankle_joint": 10.0,
             },
         ),
+        
         "arm_actuators": ImplicitActuatorCfg(
             joint_names_expr=[
                 ".*_shoulder_joint",
                 ".*_elbow_joint",
                 ".*_wrist_joint",
             ],
-            effort_limit=100,
-            velocity_limit=100,
+            effort_limit=50,
+            velocity_limit=4,
             stiffness={
-                ".*_shoulder_joint": 50.0,  # 6
-                ".*_elbow_joint": 10.0,  # 2
-                ".*_wrist_joint": 10.0,  # 2
+                ".*_shoulder_joint": 40.0,
+                ".*_elbow_joint": 30.0,
+                ".*_wrist_joint": 30.0,
             },
             damping={
-                ".*_shoulder_joint": 10.0,  # 6
-                ".*_elbow_joint": 10.0,  # 2
-                ".*_wrist_joint": 10.0,  # 2
+                ".*_shoulder_joint": 8.0,
+                ".*_elbow_joint": 8.0,
+                ".*_wrist_joint": 8.0,
             },
         ),
-    },
-)
+    }
 
 
 JACKBOT_MINIMAL_CFG = JACKBOT_CFG.copy()
