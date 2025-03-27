@@ -464,3 +464,38 @@ def stand_still_without_cmd(
         torch.sum(torch.abs(diff_angle), dim=1)
         * command  # * torch.clamp(-asset.data.projected_gravity_b[:, 2], 0, 1)
     )
+
+
+def joint_velocity_reward(
+    env, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")
+) -> torch.Tensor:
+    """Reward for maintaining target joint velocities"""
+    asset = env.scene[asset_cfg.name]
+    joint_vel = asset.data.joint_vel[asset_cfg.joint_names]
+    target_vel = asset_cfg.params["target_velocity"]
+
+    # Calculate reward based on how close the velocity is to target
+    vel_diff = torch.abs(joint_vel - target_vel)
+    reward = torch.exp(-vel_diff / 0.5)  # Exponential kernel
+
+    return reward.mean(dim=1)
+
+
+def joint_position_reward(
+    env, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")
+) -> torch.Tensor:
+    """Reward for maintaining target joint positions"""
+    asset = env.scene[asset_cfg.name]
+    joint_pos = asset.data.joint_pos[asset_cfg.joint_names]
+    target_pos = asset_cfg.params["target_position"]
+    pos_range = asset_cfg.params["position_range"]
+
+    # Calculate reward based on how close the position is to target
+    pos_diff = torch.abs(joint_pos - target_pos)
+    reward = torch.where(
+        pos_diff < pos_range,
+        torch.exp(-pos_diff / pos_range),  # Exponential kernel within range
+        torch.zeros_like(pos_diff),  # Zero reward outside range
+    )
+
+    return reward.mean(dim=1)
