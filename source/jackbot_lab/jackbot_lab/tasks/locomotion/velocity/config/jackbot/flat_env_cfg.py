@@ -110,9 +110,9 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.contact_forces.weight = 0
 
         # Feet rewards
-        self.rewards.feet_air_time.weight = 2.0
+        self.rewards.feet_air_time.weight = 1.0
 
-        self.rewards.feet_air_time.params["threshold"] = 0.4
+        self.rewards.feet_air_time.params["threshold"] = 0.5
 
         self.rewards.feet_contact.weight = 0.0
 
@@ -126,9 +126,11 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
 
         self.rewards.left_foot_orientaion.weight = -0.0
 
-        self.rewards.clock_frc.weight = 0.0
+        self.rewards.clock_frc.weight = 0.3
 
-        self.rewards.clock_vel.weight = 0.0
+        self.rewards.clock_vel.weight = 0.4
+
+        self.rewards.leg_coordination.weight = 0.3
 
         self.rewards.dof_pos_limits.weight = -0.0
         self.rewards.dof_pos_limits.params["asset_cfg"] = SceneEntityCfg(
@@ -143,7 +145,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         # ------------------------------Commands------------------------------
         self.commands.base_velocity.ranges.lin_vel_x = (0.0, 1.0)
         self.commands.base_velocity.ranges.lin_vel_y = (-0.0, 0.0)
-        self.commands.base_velocity.ranges.ang_vel_z = (-0.5, 0.5)
+        self.commands.base_velocity.ranges.ang_vel_z = (-0.0, 0.0)
         self.commands.base_velocity.heading_command = True
 
         # If the weight of rewards is 0, set rewards to None

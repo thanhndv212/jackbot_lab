@@ -102,7 +102,7 @@ class JackbotRewardsCfg(RewardsCfg):
     # Reward for the contact force on the feet during the gait cycle
     clock_frc = RewTerm(
         func=mdp.feet_clock_frc,
-        weight=1.0,
+        weight=0.3,
         params={
             "sensor_cfg": SceneEntityCfg(
                 "contact_forces", body_names="foot.*"
@@ -114,7 +114,15 @@ class JackbotRewardsCfg(RewardsCfg):
     # Reward for the velocity of the feet during the gait cycle
     clock_vel = RewTerm(
         func=mdp.feet_clock_vel,
-        weight=1.0,
+        weight=0.4,
+        params={
+            "asset_cfg": SceneEntityCfg("robot", body_names="foot.*"),
+        },
+    )
+
+    leg_coordination = RewTerm(
+        func=mdp.leg_coordination_reward,
+        weight=0.3,
         params={
             "asset_cfg": SceneEntityCfg("robot", body_names="foot.*"),
         },

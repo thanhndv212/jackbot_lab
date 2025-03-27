@@ -97,5 +97,5 @@ class BipedalManagerBasedRLEnv(ManagerBasedRLEnv, gym.Env):
         # right foot stance
         stance_mask[:, 1] = phase < 0
         # Double support phase
-        stance_mask[torch.abs(phase) < 0.1] = 1
+        stance_mask[transition_mask] = 0.5
         return stance_mask
