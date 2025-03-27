@@ -87,6 +87,10 @@ class BipedalManagerBasedRLEnv(ManagerBasedRLEnv, gym.Env):
         # gait time legnth means the time length of one gait cycle (ex. right foot stance -> left foot stance -> right foot stance)
         phase = torch.sin(2 * torch.pi * self.episode_length_buf / self.cfg.gait_step_num)
 
+        # Add smooth transition
+        transition_width = 0.1
+        transition_mask = torch.abs(phase) < transition_width
+
         stance_mask = torch.zeros((self.num_envs, 2), device=self.device)
         # left foot stance
         stance_mask[:, 0] = phase >= 0

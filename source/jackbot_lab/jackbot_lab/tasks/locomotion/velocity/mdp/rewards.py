@@ -99,12 +99,23 @@ def feet_clock_frc(
     sensor_cfg: SceneEntityCfg,
     asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
 ) -> torch.Tensor:
-    """Reward for the contact force of the feet during the gait cycle"""
     contact_sensor: ContactSensor = env.scene.sensors[sensor_cfg.name]
     stance_mask = env.gait_phase
+
+    # Add transition smoothing
+    transition_width = 0.1
+    phase = torch.sin(
+        2 * torch.pi * env.episode_length_buf / env.cfg.gait_step_num
+    )
+    transition_mask = torch.abs(phase) < transition_width
+
+    # Modify stance mask to include transition
+    stance_mask[transition_mask] = 0.5
+
     swing_mask = -1 * (1 - stance_mask)
-    # stance_mask = 1, swing_mask = -1
     stance_swing_mask = stance_mask + swing_mask
+
+    # Rest of the function remains the same
     asset = env.scene[asset_cfg.name]
     total_mass = torch.sum(asset.data.default_mass[0])
     max_frc = 0.5 * total_mass * 9.81
@@ -126,18 +137,67 @@ def feet_clock_frc(
 def feet_clock_vel(
     env, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")
 ) -> torch.Tensor:
-    """Reward for the velocity of the feet during the gait cycle"""
     stance_mask = env.gait_phase
+
+    # Add minimum velocity requirement for swing phase
+    min_swing_vel = torch.tensor(0.1, device="cuda")
+
+    # Modify swing mask to encourage movement
     swing_mask = -1 * (1 - stance_mask)
-    # stance_mask = -1, swing_mask = 1 (reverse of feet_clock_frc)
     stance_swing_mask = stance_mask + swing_mask
     stance_swing_mask *= -1
+
     asset = env.scene[asset_cfg.name]
     max_vel = torch.tensor(0.3, device="cuda")
     body_vel = asset.data.body_lin_vel_w[:, asset_cfg.body_ids, :]
-    normed_vel = torch.min(body_vel.norm(p=2, dim=-1), max_vel) / max_vel
+
+    # Add minimum velocity requirement
+    vel_norm = body_vel.norm(p=2, dim=-1)
+    vel_reward = torch.where(
+        swing_mask > 0,
+        torch.max(vel_norm - min_swing_vel, torch.zeros_like(vel_norm)),
+        vel_norm,
+    )
+
+    normed_vel = torch.min(vel_reward, max_vel) / max_vel
     rew_normed_vel = normed_vel * stance_swing_mask
     return rew_normed_vel.mean(dim=1)
+
+
+def leg_coordination_reward(
+    env, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")
+) -> torch.Tensor:
+    """Reward for proper leg coordination"""
+    stance_mask = env.gait_phase  # Shape: (num_envs, 2)
+
+    # Calculate leg height difference
+    asset = env.scene[asset_cfg.name]
+    foot_positions = asset.data.body_state_w[
+        :, asset_cfg.body_ids, 2
+    ]  # z-coordinate
+    # Shape: (num_envs, 2) - height of each foot
+
+    # Calculate height difference between feet
+    leg_height_diff = torch.abs(
+        foot_positions[:, 0] - foot_positions[:, 1]
+    )  # Shape: (num_envs,)
+
+    # Reward for proper leg height difference during swing
+    max_height_diff = torch.tensor(0.3, device="cuda")
+    height_reward = 1.0 - torch.min(
+        leg_height_diff / max_height_diff, torch.ones_like(leg_height_diff)
+    )  # Shape: (num_envs,)
+
+    # Expand height_reward to match swing_mask dimensions
+    height_reward = height_reward.unsqueeze(-1).expand(
+        -1, 2
+    )  # Shape: (num_envs, 2)
+
+    # Apply mask to reward
+    swing_mask = 1 - stance_mask  # Shape: (num_envs, 2)
+
+    # Calculate reward for each foot and take mean
+    return (height_reward * swing_mask).mean(dim=1)  # Shape: (num_envs,)
 
 
 def feet_keep_distance(
