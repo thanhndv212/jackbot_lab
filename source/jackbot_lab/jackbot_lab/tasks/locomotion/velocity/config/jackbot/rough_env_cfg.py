@@ -159,6 +159,23 @@ class JackbotRewardsCfg(RewardsCfg):
         },
     )
 
+    # Add new reward terms for gait symmetry and step length
+    gait_symmetry = RewTerm(
+        func=mdp.gait_symmetry_reward,
+        weight=-0.2,
+        params={
+            "asset_cfg": SceneEntityCfg("robot", body_names="foot.*"),
+        },
+    )
+
+    step_length = RewTerm(
+        func=mdp.step_length_reward,
+        weight=0.1,
+        params={
+            "asset_cfg": SceneEntityCfg("robot", body_names="foot.*"),
+        },
+    )
+
 
 @configclass
 class JackbotRoughEnvCfg(LocomotionVelocityRoughEnvCfg):

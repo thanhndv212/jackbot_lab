@@ -126,6 +126,10 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
 
         self.rewards.left_foot_orientaion.weight = -0.0
 
+        # Add configuration for new reward terms
+        self.rewards.gait_symmetry.weight = -0.2
+        self.rewards.step_length.weight = 0.1
+        
         self.rewards.clock_frc.weight = 0.3
 
         self.rewards.clock_vel.weight = 0.4

@@ -200,6 +200,49 @@ def leg_coordination_reward(
     return (height_reward * swing_mask).mean(dim=1)  # Shape: (num_envs,)
 
 
+def gait_symmetry_reward(
+    env, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")
+) -> torch.Tensor:
+    """Reward for maintaining symmetric gait between left and right legs"""
+    # Get gait phase for both legs
+    stance_mask = env.gait_phase  # Shape: (num_envs, 2)
+
+    # Calculate difference between left and right leg phases
+    # This penalizes when legs are in the same phase (both stance or both swing)
+    phase_diff = torch.abs(stance_mask[:, 0] - stance_mask[:, 1])
+
+    # Convert to reward (negative because we want to minimize the difference)
+    return -phase_diff
+
+
+def step_length_reward(
+    env, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")
+) -> torch.Tensor:
+    """Reward for maintaining appropriate step length between feet"""
+    # Get robot asset
+    asset = env.scene[asset_cfg.name]
+
+    # Get indices for left and right feet
+    left_foot_idx = asset.data.body_names.index("footL")
+    right_foot_idx = asset.data.body_names.index("footR")
+
+    # Get x-coordinates (forward direction) of both feet
+    left_foot_x = asset.data.body_state_w[:, left_foot_idx, 0]
+    right_foot_x = asset.data.body_state_w[:, right_foot_idx, 0]
+
+    # Calculate step length (absolute difference in x-coordinates)
+    step_length = torch.abs(left_foot_x - right_foot_x)
+
+    # Define target step length (adjust this value based on your robot's size)
+    target_step_length = torch.tensor(0.3, device="cuda")
+
+    # Calculate reward based on how close the step length is to target
+    # Using exponential kernel for smooth reward
+    reward = torch.exp(-torch.abs(step_length - target_step_length) / 0.1)
+
+    return reward
+
+
 def feet_keep_distance(
     env,
     dist_min: float,
