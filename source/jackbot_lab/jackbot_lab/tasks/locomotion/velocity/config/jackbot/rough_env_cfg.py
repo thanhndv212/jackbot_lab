@@ -197,9 +197,11 @@ class JackbotRewardsCfg(RewardsCfg):
 
     step_length = RewTerm(
         func=mdp.step_length_reward,
-        weight=0.1,
+        weight=0.3,
         params={
             "asset_cfg": SceneEntityCfg("robot", body_names="foot.*"),
+            "target_step_length": 0.4,
+            "min_step_length": 0.2,
         },
     )
 
