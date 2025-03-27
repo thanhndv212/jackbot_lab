@@ -129,6 +129,20 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         # Add configuration for new reward terms
         self.rewards.gait_symmetry.weight = -0.2
         self.rewards.step_length.weight = 0.1
+        self.rewards.step_length.params["target_step_length"] = 0.4
+        self.rewards.step_length.params["min_step_length"] = 0.2
+
+        # Add hip movement reward
+        self.rewards.hip_movement.weight = 0.2
+        self.rewards.hip_movement.params["asset_cfg"] = SceneEntityCfg(
+            "robot",
+            joint_names=[".*_pitch_hip_joint", ".*_roll_hip_joint"],
+        )
+        self.rewards.hip_extension.weight = 0.15
+        self.rewards.hip_extension.params["asset_cfg"] = SceneEntityCfg(
+            "robot",
+            joint_names=[".*_pitch_hip_joint"],
+        )
 
         self.rewards.clock_frc.weight = 0.3
 
