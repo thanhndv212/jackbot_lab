@@ -216,7 +216,10 @@ def gait_symmetry_reward(
 
 
 def step_length_reward(
-    env, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")
+    env,
+    target_step_length: float,
+    min_step_length: float,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
 ) -> torch.Tensor:
     """Reward for maintaining appropriate step length between feet"""
     # Get robot asset
@@ -232,10 +235,6 @@ def step_length_reward(
 
     # Calculate step length (absolute difference in x-coordinates)
     step_length = torch.abs(left_foot_x - right_foot_x)
-
-    # Get target and minimum step lengths from params
-    target_step_length = asset_cfg.params.get("target_step_length", 0.3)
-    min_step_length = asset_cfg.params.get("min_step_length", 0.2)
 
     # Calculate reward based on how close the step length is to target
     # Penalize if step length is too small
@@ -472,35 +471,49 @@ def stand_still_without_cmd(
 
 
 def joint_velocity_reward(
-    env, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")
+    env,
+    target_velocity: float,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
 ) -> torch.Tensor:
     """Reward for maintaining target joint velocities"""
     asset = env.scene[asset_cfg.name]
-    joint_vel = asset.data.joint_vel[asset_cfg.joint_names]
-    target_vel = asset_cfg.params["target_velocity"]
+    # Get joint velocities with proper batch dimension
+    joint_vel = asset.data.joint_vel[
+        :, asset_cfg.joint_ids
+    ]  # Shape: (num_envs, num_joints)
 
     # Calculate reward based on how close the velocity is to target
-    vel_diff = torch.abs(joint_vel - target_vel)
+    vel_diff = torch.abs(
+        joint_vel - target_velocity
+    )  # Shape: (num_envs, num_joints)
     reward = torch.exp(-vel_diff / 0.5)  # Exponential kernel
 
-    return reward.mean(dim=1)
+    return reward.mean(dim=1)  # Shape: (num_envs,)
 
 
 def joint_position_reward(
-    env, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")
+    env,
+    target_position: float,
+    position_range: float,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
 ) -> torch.Tensor:
     """Reward for maintaining target joint positions"""
     asset = env.scene[asset_cfg.name]
-    joint_pos = asset.data.joint_pos[asset_cfg.joint_names]
-    target_pos = asset_cfg.params["target_position"]
-    pos_range = asset_cfg.params["position_range"]
+    # Get joint positions with proper batch dimension
+    joint_pos = asset.data.joint_pos[
+        :, asset_cfg.joint_ids
+    ]  # Shape: (num_envs, num_joints)
 
     # Calculate reward based on how close the position is to target
-    pos_diff = torch.abs(joint_pos - target_pos)
+    pos_diff = torch.abs(
+        joint_pos - target_position
+    )  # Shape: (num_envs, num_joints)
     reward = torch.where(
-        pos_diff < pos_range,
-        torch.exp(-pos_diff / pos_range),  # Exponential kernel within range
+        pos_diff < position_range,
+        torch.exp(
+            -pos_diff / position_range
+        ),  # Exponential kernel within range
         torch.zeros_like(pos_diff),  # Zero reward outside range
     )
 
-    return reward.mean(dim=1)
+    return reward.mean(dim=1)  # Shape: (num_envs,)
