@@ -103,7 +103,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
             ],
         )
         # Action penalties
-        self.rewards.action_rate_l2.weight = -0.00
+        self.rewards.action_rate_l2.weight = -0.005
 
         # Contact sensor
         self.rewards.undesired_contacts.weight = 0
