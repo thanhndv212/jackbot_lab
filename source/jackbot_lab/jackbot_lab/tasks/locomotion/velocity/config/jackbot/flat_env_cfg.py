@@ -66,8 +66,8 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_hip_l1",
-            -0.01,
-            [".*_pitch_hip_joint",],
+            -0.05,  # Increase from -0.01 to allow more movement
+            [".*_pitch_hip_joint", ".*_roll_hip_joint"],  # Add roll hip joint
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_ankle_l1",
@@ -129,7 +129,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         # Add configuration for new reward terms
         self.rewards.gait_symmetry.weight = -0.2
         self.rewards.step_length.weight = 0.1
-        
+
         self.rewards.clock_frc.weight = 0.3
 
         self.rewards.clock_vel.weight = 0.4
