@@ -233,12 +233,17 @@ def step_length_reward(
     # Calculate step length (absolute difference in x-coordinates)
     step_length = torch.abs(left_foot_x - right_foot_x)
 
-    # Define target step length (adjust this value based on your robot's size)
-    target_step_length = torch.tensor(0.3, device="cuda")
+    # Get target and minimum step lengths from params
+    target_step_length = asset_cfg.params.get("target_step_length", 0.3)
+    min_step_length = asset_cfg.params.get("min_step_length", 0.2)
 
     # Calculate reward based on how close the step length is to target
-    # Using exponential kernel for smooth reward
-    reward = torch.exp(-torch.abs(step_length - target_step_length) / 0.1)
+    # Penalize if step length is too small
+    reward = torch.where(
+        step_length >= min_step_length,
+        torch.exp(-torch.abs(step_length - target_step_length) / 0.1),
+        torch.zeros_like(step_length),
+    )
 
     return reward
 
