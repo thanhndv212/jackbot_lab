@@ -159,6 +159,33 @@ class JackbotRewardsCfg(RewardsCfg):
         },
     )
 
+    # Add hip movement reward
+    hip_movement = RewTerm(
+        func=mdp.joint_velocity_reward,
+        weight=0.2,
+        params={
+            "asset_cfg": SceneEntityCfg(
+                "robot",
+                joint_names=[".*_pitch_hip_joint", ".*_roll_hip_joint"],
+            ),
+            "target_velocity": 1.0,
+        },
+    )
+
+    # Add hip extension reward
+    hip_extension = RewTerm(
+        func=mdp.joint_position_reward,
+        weight=0.15,
+        params={
+            "asset_cfg": SceneEntityCfg(
+                "robot",
+                joint_names=[".*_pitch_hip_joint"],
+            ),
+            "target_position": 0.3,
+            "position_range": 0.2,
+        },
+    )
+
     # Add new reward terms for gait symmetry and step length
     gait_symmetry = RewTerm(
         func=mdp.gait_symmetry_reward,
