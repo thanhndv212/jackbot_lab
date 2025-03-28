@@ -5,7 +5,9 @@ from isaaclab.managers import SceneEntityCfg
 from isaaclab.utils import configclass
 
 from .rough_env_cfg import JackbotRoughEnvCfg
+from torch import pi
 
+deg_to_rad = pi / 180.0
 
 @configclass
 class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
@@ -102,6 +104,15 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
                 ".*_ankle_.*",
             ],
         )
+        self.rewards.dof_pos_limits.weight = -0.0
+        self.rewards.dof_pos_limits.params["asset_cfg"] = SceneEntityCfg(
+            "robot",
+            joint_names=[
+                ".*_hip_.*",
+                ".*_knee_.*",
+                ".*_ankle_.*",
+            ],
+        )
         # Action penalties
         self.rewards.action_rate_l2.weight = -0.005
 
@@ -127,38 +138,32 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.left_foot_orientaion.weight = -0.0
 
         # Add configuration for new reward terms
-        self.rewards.gait_symmetry.weight = -0.2
-        self.rewards.step_length.weight = 0.1
-        self.rewards.step_length.params["target_step_length"] = 0.4
-        self.rewards.step_length.params["min_step_length"] = 0.2
+        self.rewards.gait_symmetry.weight = -0.15
+        self.rewards.step_length.weight = 0.25
+        self.rewards.step_length.params["target_step_length"] = 0.45
+        self.rewards.step_length.params["min_step_length"] = 0.25
 
         # Add hip movement reward
-        self.rewards.hip_movement.weight = 0.2
+        self.rewards.hip_movement.weight = 0.3
         self.rewards.hip_movement.params["asset_cfg"] = SceneEntityCfg(
             "robot",
-            joint_names=[".*_pitch_hip_joint", ".*_roll_hip_joint"],
+            joint_names=[".*_pitch_hip_joint"],
         )
-        self.rewards.hip_extension.weight = 0.15
+        self.rewards.hip_movement.params["target_velocity"] = 1.5
+
+        # Add hip extension reward
+        self.rewards.hip_extension.weight = 0.2
         self.rewards.hip_extension.params["asset_cfg"] = SceneEntityCfg(
             "robot",
             joint_names=[".*_pitch_hip_joint"],
         )
+        self.rewards.hip_extension.params["target_position"] = -12.0 * deg_to_rad
+        self.rewards.hip_extension.params["position_range"] = 0.15
 
-        self.rewards.clock_frc.weight = 0.3
-
-        self.rewards.clock_vel.weight = 0.4
-
-        self.rewards.leg_coordination.weight = 0.3
-
-        self.rewards.dof_pos_limits.weight = -0.0
-        self.rewards.dof_pos_limits.params["asset_cfg"] = SceneEntityCfg(
-            "robot",
-            joint_names=[
-                ".*_hip_.*",
-                ".*_knee_.*",
-                ".*_ankle_.*",
-            ],
-        )
+        # Add clock force reward
+        self.rewards.clock_frc.weight = 0.4
+        self.rewards.clock_vel.weight = 0.3
+        self.rewards.leg_coordination.weight = 0.4
 
         # ------------------------------Commands------------------------------
         self.commands.base_velocity.ranges.lin_vel_x = (0.0, 1.0)
