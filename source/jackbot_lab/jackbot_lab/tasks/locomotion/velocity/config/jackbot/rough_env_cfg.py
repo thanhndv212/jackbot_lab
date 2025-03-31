@@ -1,7 +1,6 @@
 # Copyright (c) 2024-2025 Ziqi Fan
 # SPDX-License-Identifier: Apache-2.0
 
-import isaaclab_tasks.manager_based.locomotion.velocity.mdp as mdp
 from isaaclab.managers import RewardTermCfg as RewTerm
 from isaaclab.managers import ObservationTermCfg as ObsTerm
 from isaaclab.managers import SceneEntityCfg
@@ -10,8 +9,6 @@ from isaaclab.utils import configclass
 from jackbot_lab.tasks.locomotion.velocity.velocity_env_cfg import (
     LocomotionVelocityRoughEnvCfg,
     RewardsCfg,
-    EventCfg,
-    ObservationsCfg,
 )
 
 import jackbot_lab.tasks.locomotion.velocity.mdp as mdp
