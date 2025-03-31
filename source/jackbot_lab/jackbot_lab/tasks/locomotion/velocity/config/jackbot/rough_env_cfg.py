@@ -186,6 +186,19 @@ class JackbotRewardsCfg(RewardsCfg):
         },
     )
 
+    knee_extension = RewTerm(
+        func=mdp.joint_position_reward,
+        weight=0.15,
+        params={
+            "asset_cfg": SceneEntityCfg(
+                "robot",
+                joint_names=[".*_pitch_knee_joint"],
+            ),
+            "target_position": 0.3,
+            "position_range": 0.2,
+        },
+    )
+
     # Add new reward terms for gait symmetry and step length
     gait_symmetry = RewTerm(
         func=mdp.gait_symmetry_reward,
