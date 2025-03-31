@@ -32,44 +32,41 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         # Velocity-tracking rewards
         self.rewards.track_lin_vel_xy_exp.weight = 2.0
         self.rewards.track_lin_vel_xy_exp.params["std"] = 0.5
-
         self.rewards.track_ang_vel_z_exp.weight = 2.0
         self.rewards.track_ang_vel_z_exp.params["std"] = 0.5
 
         # Root penalties
         self.rewards.lin_vel_z_l2.weight = -0.0
-
         self.rewards.ang_vel_xy_l2.weight = -0.0
-
         self.rewards.flat_orientation_l2.weight = -5.0
-
         self.rewards.base_height_l2.weight = -0.1
-        self.rewards.base_height_l2.params["target_height"] = 0.82
-
+        self.rewards.base_height_l2.params["target_height"] = 0.828
         self.rewards.body_lin_acc_l2.weight = 0
 
         # Joint penalties
         self.rewards.joint_deviation.weight = -0.0
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_other_l1",
-            -0.5,
+            -0.3,
             [
                 ".*_yaw_hip_joint",
                 ".*_yaw_knee_joint",
                 ".*_shoulder_joint",
                 ".*_pitch_elbow_joint",
                 ".*_wrist_joint",
-                ".*_roll_hip_joint",
                 "yaw_waist_joint",
+                
             ],
         )
         self.rewards.create_joint_deviation_l1_rewterm(
-            "joint_deviation_knee_l1", -0.1, [".*_pitch_knee_joint"]
+            "joint_deviation_knee_l1",
+            -0.2,
+            [".*_pitch_knee_joint", ".*_roll_hip_joint"],
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_hip_l1",
             -0.05,  # Increase from -0.01 to allow more movement
-            [".*_pitch_hip_joint", ".*_roll_hip_joint"],  # Add roll hip joint
+            [".*_pitch_hip_joint"],  # Add roll hip joint
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_ankle_l1",
@@ -122,29 +119,22 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
 
         # Feet rewards
         self.rewards.feet_air_time.weight = 1.5
-
         self.rewards.feet_air_time.params["threshold"] = 0.5
-
         self.rewards.feet_contact.weight = 0.0
-
         self.rewards.feet_slide.weight = -0.0
-
         self.rewards.knee_keep_distance.weight = -0.0
-
         self.rewards.feet_keep_distance.weight = -0.0
-
         self.rewards.right_foot_orientaion.weight = -0.0
-
         self.rewards.left_foot_orientaion.weight = -0.0
 
         # Add configuration for new reward terms
-        self.rewards.gait_symmetry.weight = -0.15
-        self.rewards.step_length.weight = 0.25
-        self.rewards.step_length.params["target_step_length"] = 0.45
-        self.rewards.step_length.params["min_step_length"] = 0.25
+        self.rewards.gait_symmetry.weight = 0.1
+        self.rewards.step_length.weight = 0.3
+        self.rewards.step_length.params["target_step_length"] = 0.35
+        self.rewards.step_length.params["min_step_length"] = 0.15
 
         # Add hip movement reward
-        self.rewards.hip_movement.weight = 0.3
+        self.rewards.hip_movement.weight = 0.0
         self.rewards.hip_movement.params["asset_cfg"] = SceneEntityCfg(
             "robot",
             joint_names=[".*_pitch_hip_joint"],
@@ -158,7 +148,18 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
             joint_names=[".*_pitch_hip_joint"],
         )
         self.rewards.hip_extension.params["target_position"] = -12.0 * deg_to_rad
-        self.rewards.hip_extension.params["position_range"] = 0.15
+        self.rewards.hip_extension.params["position_range"] = 12.0 * deg_to_rad
+
+        # Add knee extension reward
+        self.rewards.knee_extension.weight = 0.2
+        self.rewards.knee_extension.params["asset_cfg"] = SceneEntityCfg(
+            "robot",
+            joint_names=[".*_pitch_knee_joint"],
+        )
+        self.rewards.knee_extension.params["target_position"] = (
+            45.0 * deg_to_rad
+        )
+        self.rewards.knee_extension.params["position_range"] = 30.0 * deg_to_rad
 
         # Add clock force reward
         self.rewards.clock_frc.weight = 0.4
@@ -167,8 +168,8 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
 
         # ------------------------------Commands------------------------------
         self.commands.base_velocity.ranges.lin_vel_x = (0.0, 1.0)
-        self.commands.base_velocity.ranges.lin_vel_y = (-0.0, 0.0)
-        self.commands.base_velocity.ranges.ang_vel_z = (-0.0, 0.0)
+        self.commands.base_velocity.ranges.lin_vel_y = (-0.1, 0.1)
+        self.commands.base_velocity.ranges.ang_vel_z = (-0.1, 0.1)
         self.commands.base_velocity.heading_command = True
 
         # If the weight of rewards is 0, set rewards to None
