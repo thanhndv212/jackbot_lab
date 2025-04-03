@@ -127,13 +127,18 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.right_foot_orientaion.weight = 0.0
         self.rewards.left_foot_orientaion.weight = 0.0
 
-        # Add configuration for new reward terms
-        self.rewards.gait_symmetry.weight = -0.5
-        self.rewards.step_length.weight = 0.5
+        # Clock-based rewards (core of the policy)
+        self.rewards.clock_frc.weight = 0.8
+        self.rewards.clock_vel.weight = 0.6
+        self.rewards.leg_coordination.weight = 0.6
+
+        # Gait symmetry and step length (essential for walking)
+        self.rewards.gait_symmetry.weight = 0.5
+        self.rewards.step_length.weight = 0.4
         self.rewards.step_length.params["target_step_length"] = 0.4
         self.rewards.step_length.params["min_step_length"] = 0.2
 
-        # Add hip movement reward
+        # Joint movement rewards (minimal for clock-based walking)
         self.rewards.hip_movement.weight = 0.0
         self.rewards.hip_movement.params["asset_cfg"] = SceneEntityCfg(
             "robot",
@@ -141,8 +146,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         )
         self.rewards.hip_movement.params["target_velocity"] = 1.0
 
-        # Add hip extension reward
-        self.rewards.hip_extension.weight = 0.3
+        self.rewards.hip_extension.weight = 0.0
         self.rewards.hip_extension.params["asset_cfg"] = SceneEntityCfg(
             "robot",
             joint_names=[".*_pitch_hip_joint"],
@@ -150,7 +154,6 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.hip_extension.params["target_position"] = -12.0 * deg_to_rad
         self.rewards.hip_extension.params["position_range"] = 12.0 * deg_to_rad
 
-        # Add knee extension reward
         self.rewards.knee_extension.weight = 0.0
         self.rewards.knee_extension.params["asset_cfg"] = SceneEntityCfg(
             "robot",
