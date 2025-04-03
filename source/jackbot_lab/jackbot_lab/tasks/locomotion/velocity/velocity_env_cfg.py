@@ -493,14 +493,6 @@ class RewardsCfg:
             "expect_contact_num": 1,
         },
     )
-    stand_still_without_cmd = RewTerm(
-        func=mdp.stand_still_without_cmd,
-        weight=0.0,
-        params={
-            "command_name": "base_velocity",
-            "asset_cfg": SceneEntityCfg("robot", joint_names=".*"),
-        },
-    )
     # Contact penalties
     undesired_contacts = RewTerm(
         func=mdp.undesired_contacts,

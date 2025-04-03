@@ -317,7 +317,6 @@ class JackbotRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
 
         # Others
         self.rewards.joint_power.weight = 0
-        self.rewards.stand_still_without_cmd.weight = 0.0
 
         # If the weight of rewards is 0, set rewards to None
         if self.__class__.__name__ == "JackbotRoughEnvCfg":
