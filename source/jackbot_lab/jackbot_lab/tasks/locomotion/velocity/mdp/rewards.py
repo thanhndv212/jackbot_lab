@@ -221,8 +221,8 @@ def gait_symmetry_reward(
     # This penalizes when legs are in the same phase (both stance or both swing)
     phase_diff = torch.abs(stance_mask[:, 0] - stance_mask[:, 1])
 
-    # Convert to reward (negative because we want to minimize the difference)
-    return -phase_diff
+    # Normalize phase difference using exponential kernel
+    return exp_normalize(phase_diff, std=0.5)
 
 
 def step_length_reward(
