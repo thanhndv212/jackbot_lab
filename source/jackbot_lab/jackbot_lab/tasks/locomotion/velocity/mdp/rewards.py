@@ -58,7 +58,7 @@ def feet_air_time(
         torch.norm(env.command_manager.get_command(command_name)[:, :2], dim=1)
         > 0.1
     )
-    return reward
+    return exp_normalize(reward, std=threshold)
 
 
 def feet_air_time_positive_biped(
@@ -91,7 +91,7 @@ def feet_air_time_positive_biped(
         torch.norm(env.command_manager.get_command(command_name)[:, :2], dim=1)
         > 0.1
     )
-    return reward
+    return exp_normalize(reward, std=threshold)
 
 
 def feet_orientation(
