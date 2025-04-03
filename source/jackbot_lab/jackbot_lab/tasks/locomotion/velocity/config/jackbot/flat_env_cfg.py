@@ -29,10 +29,10 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         # General
         self.rewards.is_terminated.weight = -200
 
-        # Velocity-tracking rewards
-        self.rewards.track_lin_vel_xy_exp.weight = 1.0
+        # Velocity-tracking rewards (essential for walking)
+        self.rewards.track_lin_vel_xy_exp.weight = 1.2
         self.rewards.track_lin_vel_xy_exp.params["std"] = 0.5
-        self.rewards.track_ang_vel_z_exp.weight = 1.0
+        self.rewards.track_ang_vel_z_exp.weight = 0.6
         self.rewards.track_ang_vel_z_exp.params["std"] = 0.5
 
         # Root penalties
