@@ -121,7 +121,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.feet_air_time.weight = 1.0
         self.rewards.feet_air_time.params["threshold"] = 0.4
         self.rewards.feet_contact.weight = 0.0
-        self.rewards.feet_slide.weight = -0.0
+        self.rewards.feet_slide_exp.weight = -0.8  # Essential for stability
         self.rewards.knee_keep_distance.weight = -0.0
         self.rewards.feet_keep_distance.weight = -0.0
         self.rewards.right_foot_orientaion.weight = -0.0

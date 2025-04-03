@@ -307,7 +307,7 @@ def feet_contact(
     return reward
 
 
-def feet_slide(
+def feet_slide_exp(
     env,
     sensor_cfg: SceneEntityCfg,
     asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
@@ -330,7 +330,7 @@ def feet_slide(
 
     body_vel = asset.data.body_lin_vel_w[:, asset_cfg.body_ids, :2]
     reward = torch.sum(body_vel.norm(dim=-1) * contacts, dim=1)
-    return reward
+    return exp_normalize(reward, std=0.3)
 
 
 def track_lin_vel_xy_yaw_frame_exp(

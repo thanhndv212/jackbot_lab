@@ -31,8 +31,8 @@ class JackbotRewardsCfg(RewardsCfg):
         },
     )
 
-    feet_slide = RewTerm(
-        func=mdp.feet_slide,
+    feet_slide_exp = RewTerm(
+        func=mdp.feet_slide_exp,
         weight=-0.25,
         params={
             "sensor_cfg": SceneEntityCfg(
@@ -263,9 +263,9 @@ class JackbotRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         self.rewards.ang_vel_xy_l2.weight = -0.05
         self.rewards.flat_orientation_l2.weight = -5.0
 
-        self.rewards.base_height_l2.weight = -0.5
-        self.rewards.base_height_l2.params["target_height"] = 0.832
-        self.rewards.base_height_l2.params["asset_cfg"].body_names = [
+        self.rewards.base_height_exp.weight = -0.5
+        self.rewards.base_height_exp.params["target_height"] = 0.832
+        self.rewards.base_height_exp.params["asset_cfg"].body_names = [
             self.base_link_name
         ]
 
@@ -310,8 +310,8 @@ class JackbotRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
 
         self.rewards.feet_contact.weight = 0
 
-        self.rewards.feet_slide.weight = -0.1
-        self.rewards.feet_slide.params["sensor_cfg"].body_names = [
+        self.rewards.feet_slide_exp.weight = -0.1
+        self.rewards.feet_slide_exp.params["sensor_cfg"].body_names = [
             self.foot_link_name
         ]
 
