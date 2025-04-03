@@ -194,11 +194,9 @@ def leg_coordination_reward(
         foot_positions[:, 0] - foot_positions[:, 1]
     )  # Shape: (num_envs,)
 
-    # Reward for proper leg height difference during swing
+    # Normalize height difference using exponential kernel
     max_height_diff = torch.tensor(0.3, device="cuda")
-    height_reward = 1.0 - torch.min(
-        leg_height_diff / max_height_diff, torch.ones_like(leg_height_diff)
-    )  # Shape: (num_envs,)
+    height_reward = exp_normalize(leg_height_diff, std=max_height_diff)
 
     # Expand height_reward to match swing_mask dimensions
     height_reward = height_reward.unsqueeze(-1).expand(
