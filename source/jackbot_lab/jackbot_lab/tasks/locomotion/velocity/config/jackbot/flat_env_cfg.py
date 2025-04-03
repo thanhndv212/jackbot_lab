@@ -117,15 +117,15 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.undesired_contacts.weight = 0
         self.rewards.contact_forces.weight = 0
 
-        # Feet rewards
+        # Feet rewards (essential for clock-based walking)
         self.rewards.feet_air_time.weight = 1.0
         self.rewards.feet_air_time.params["threshold"] = 0.4
-        self.rewards.feet_contact.weight = 0.0
-        self.rewards.feet_slide_exp.weight = -0.8  # Essential for stability
-        self.rewards.knee_keep_distance.weight = -0.0
-        self.rewards.feet_keep_distance.weight = -0.0
-        self.rewards.right_foot_orientaion.weight = -0.0
-        self.rewards.left_foot_orientaion.weight = -0.0
+        self.rewards.feet_contact.weight = -0.3
+        self.rewards.feet_slide_exp.weight = -0.5
+        self.rewards.knee_keep_distance.weight = -0.2
+        self.rewards.feet_keep_distance.weight = -0.2
+        self.rewards.right_foot_orientaion.weight = 0.0
+        self.rewards.left_foot_orientaion.weight = 0.0
 
         # Add configuration for new reward terms
         self.rewards.gait_symmetry.weight = -0.5
