@@ -128,21 +128,19 @@ def feet_clock_frc(
     swing_mask = -1 * (1 - stance_mask)
     stance_swing_mask = stance_mask + swing_mask
 
-    # Rest of the function remains the same
     asset = env.scene[asset_cfg.name]
     total_mass = torch.sum(asset.data.default_mass[0])
     max_frc = 0.5 * total_mass * 9.81
-    normed_frc = (
-        torch.min(
-            contact_sensor.data.net_forces_w_history[
-                :, :, sensor_cfg.body_ids, :
-            ]
-            .norm(p=2, dim=-1)
-            .max(dim=1)[0],
-            max_frc,
-        )
-        / max_frc
-    )
+    
+    # Get contact forces
+    contact_forces = contact_sensor.data.net_forces_w_history[:, :, sensor_cfg.body_ids, :]
+    force_norms = contact_forces.norm(p=2, dim=-1).max(dim=1)[0]
+    
+    # Normalize forces using exponential kernel
+    force_diff = torch.abs(force_norms - max_frc)
+    normed_frc = exp_normalize(force_diff, std=max_frc)
+    
+    # Apply stance-swing mask
     rew_normed_frc = normed_frc * stance_swing_mask
     return rew_normed_frc.mean(dim=1)
 
