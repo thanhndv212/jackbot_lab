@@ -152,6 +152,7 @@ def feet_clock_vel(
 
     # Add minimum velocity requirement for swing phase
     min_swing_vel = torch.tensor(0.1, device="cuda")
+    max_vel = torch.tensor(0.3, device="cuda")
 
     # Modify swing mask to encourage movement
     swing_mask = -1 * (1 - stance_mask)
@@ -159,18 +160,18 @@ def feet_clock_vel(
     stance_swing_mask *= -1
 
     asset = env.scene[asset_cfg.name]
-    max_vel = torch.tensor(0.3, device="cuda")
     body_vel = asset.data.body_lin_vel_w[:, asset_cfg.body_ids, :]
-
-    # Add minimum velocity requirement
     vel_norm = body_vel.norm(p=2, dim=-1)
-    vel_reward = torch.where(
-        swing_mask > 0,
-        torch.max(vel_norm - min_swing_vel, torch.zeros_like(vel_norm)),
-        vel_norm,
-    )
 
-    normed_vel = torch.min(vel_reward, max_vel) / max_vel
+    # Normalize velocities using exponential kernel
+    vel_diff = torch.where(
+        swing_mask > 0,
+        torch.abs(vel_norm - min_swing_vel),  # For swing phase
+        torch.abs(vel_norm - max_vel)  # For stance phase
+    )
+    normed_vel = exp_normalize(vel_diff, std=max_vel)
+    
+    # Apply stance-swing mask
     rew_normed_vel = normed_vel * stance_swing_mask
     return rew_normed_vel.mean(dim=1)
 
