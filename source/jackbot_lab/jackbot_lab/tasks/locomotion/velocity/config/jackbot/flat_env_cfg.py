@@ -161,10 +161,11 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         )
         self.rewards.knee_extension.params["position_range"] = 15.0 * deg_to_rad
 
-        # Add clock force reward
-        self.rewards.clock_frc.weight = 0.4
-        self.rewards.clock_vel.weight = 0.3
-        self.rewards.leg_coordination.weight = 0.2
+        # New gait-specific rewards with higher weights for flat terrain
+        self.rewards.air_time_balance = 0.6  # Reward balanced air time between feet
+        self.rewards.feet_alignment = 0.5    # Reward proper alignment of feet relative to body
+        self.rewards.gait_consistency = 0.5  # Reward consistent gait phase across steps
+        self.rewards.velocity_consistency = 0.4  # Reward consistent body velocity over window
 
         # ------------------------------Commands------------------------------
         self.commands.base_velocity.ranges.lin_vel_x = (0.0, 1.0)

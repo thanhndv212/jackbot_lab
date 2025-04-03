@@ -339,3 +339,9 @@ class JackbotRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         self.commands.base_velocity.ranges.lin_vel_x = (0.0, 1.0)
         self.commands.base_velocity.ranges.lin_vel_y = (0.0, 0.0)
         self.commands.base_velocity.ranges.ang_vel_z = (-1.0, 1.0)
+
+        # New gait-specific rewards
+        self.rewards.air_time_balance = 0.5  # Reward balanced air time between feet
+        self.rewards.feet_alignment = 0.4    # Reward proper alignment of feet relative to body
+        self.rewards.gait_consistency = 0.4  # Reward consistent gait phase across steps
+        self.rewards.velocity_consistency = 0.3  # Reward consistent body velocity over window
