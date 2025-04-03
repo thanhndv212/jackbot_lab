@@ -83,19 +83,24 @@ class BipedalManagerBasedRLEnv(ManagerBasedRLEnv, gym.Env):
 
     @property
     def gait_phase(self) -> torch.Tensor:
-        # gait time length (s) = step time length(0.02 s) * gait_step_num
-        # gait time legnth means the time length of one gait cycle (ex. right foot stance -> left foot stance -> right foot stance)
+        # Calculate phase using sine wave
         phase = torch.sin(2 * torch.pi * self.episode_length_buf / self.cfg.gait_step_num)
-
-        # Add smooth transition
-        transition_width = 0.1
+        
+        # Adaptive transition width based on velocity
+        base_transition_width = 0.2  # 20% of gait cycle for double support
+        velocity = torch.norm(self.command_manager.get_command("base_velocity")[:, :2], dim=1)
+        # Reduce transition width as velocity increases
+        transition_width = base_transition_width * torch.exp(-velocity)
+        transition_width = torch.clamp(transition_width, min=0.1, max=0.25)
+        
         transition_mask = torch.abs(phase) < transition_width
-
+        
         stance_mask = torch.zeros((self.num_envs, 2), device=self.device)
         # left foot stance
         stance_mask[:, 0] = phase >= 0
         # right foot stance
         stance_mask[:, 1] = phase < 0
-        # Double support phase
+        # Double support phase with velocity-dependent transition
         stance_mask[transition_mask] = 0.5
+        
         return stance_mask
