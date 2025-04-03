@@ -379,8 +379,8 @@ class RewardsCfg:
     lin_vel_z_l2 = RewTerm(func=mdp.lin_vel_z_l2, weight=0.0)
     ang_vel_xy_l2 = RewTerm(func=mdp.ang_vel_xy_l2, weight=0.0)
     flat_orientation_l2 = RewTerm(func=mdp.flat_orientation_l2, weight=0.0)
-    base_height_l2 = RewTerm(
-        func=mdp.base_height_l2,
+    base_height_exp = RewTerm(
+        func=mdp.base_height_exp,
         weight=0.0,
         params={
             "asset_cfg": SceneEntityCfg("robot", body_names=""),

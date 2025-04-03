@@ -408,7 +408,7 @@ def feet_height_body_exp(
     return torch.exp(-reward / std**2)
 
 
-def base_height_l2(
+def base_height_exp(
     env: ManagerBasedRLEnv,
     target_height: float,
     asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
@@ -439,8 +439,9 @@ def base_height_l2(
     else:
         # Use the provided target height directly for flat terrain
         adjusted_target_height = target_height
-    # Compute the L2 squared penalty
-    return torch.square(asset.data.root_pos_w[:, 2] - adjusted_target_height)
+    # Compute the exponential penalty
+    height_diff = asset.data.root_pos_w[:, 2] - adjusted_target_height
+    return exp_normalize(height_diff, std=0.1)
 
 
 def joint_power(
