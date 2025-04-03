@@ -104,7 +104,7 @@ def feet_orientation(
     body_quat = asset.data.body_quat_w[:, asset_cfg.body_ids, :].reshape(-1, 4)
     root_quat = asset.data.root_quat_w
     angle_diff = torch.abs(quat_error_magnitude(body_quat, root_quat))
-    return angle_diff
+    return exp_normalize(angle_diff, std=0.5)
 
 
 def feet_clock_frc(
