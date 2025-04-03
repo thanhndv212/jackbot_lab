@@ -18,6 +18,19 @@ if TYPE_CHECKING:
     from isaaclab.envs import ManagerBasedRLEnv
 
 
+def exp_normalize(x: torch.Tensor, std: float = 1.0) -> torch.Tensor:
+    """Normalize a tensor using exponential kernel.
+    
+    Args:
+        x: Input tensor
+        std: Standard deviation for the exponential kernel
+        
+    Returns:
+        Normalized tensor using exp(-x^2/2std^2)
+    """
+    return torch.exp(-torch.square(x) / (2 * std**2))
+
+
 def feet_air_time(
     env: ManagerBasedRLEnv,
     command_name: str,
