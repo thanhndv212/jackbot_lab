@@ -245,16 +245,14 @@ def step_length_reward(
 
     # Calculate step length (absolute difference in x-coordinates)
     step_length = torch.abs(left_foot_x - right_foot_x)
-
-    # Calculate reward based on how close the step length is to target
-    # Penalize if step length is too small
-    reward = torch.where(
+    
+    # Normalize step length using exponential kernel
+    step_length_diff = torch.where(
         step_length >= min_step_length,
-        torch.exp(-torch.abs(step_length - target_step_length) / 0.1),
-        torch.zeros_like(step_length),
+        torch.abs(step_length - target_step_length),
+        torch.tensor(float('inf'), device=step_length.device)
     )
-
-    return reward
+    return exp_normalize(step_length_diff, std=0.1)
 
 
 def feet_keep_distance(
