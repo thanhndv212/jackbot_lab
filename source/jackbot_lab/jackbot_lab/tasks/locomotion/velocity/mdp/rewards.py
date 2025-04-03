@@ -304,7 +304,7 @@ def feet_contact(
         torch.norm(env.command_manager.get_command(command_name)[:, :2], dim=1)
         > 0.1
     )
-    return reward
+    return exp_normalize(reward, std=0.5)
 
 
 def feet_slide_exp(
