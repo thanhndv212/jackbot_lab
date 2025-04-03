@@ -44,11 +44,10 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.base_height_exp.params["std"] = 0.2
         self.rewards.body_lin_acc_l2.weight = -0.3
 
-        # Joint penalties
-        self.rewards.joint_deviation.weight = -0.0
+        # Joint penalties (minimal for clock-based walking)
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_other_l1",
-            -0.5,
+            -0.3,
             [
                 ".*_yaw_hip_joint",
                 ".*_yaw_knee_joint",
@@ -56,22 +55,22 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
                 ".*_pitch_elbow_joint",
                 ".*_wrist_joint",
                 "yaw_waist_joint",
-                
+                ".*_roll_hip_joint"
             ],
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_knee_l1",
             -0.2,
-            [".*_pitch_knee_joint", ".*_roll_hip_joint"],
+            [".*_pitch_knee_joint"],
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_hip_l1",
-            -0.01,  # Increase from -0.01 to allow more movement
-            [".*_pitch_hip_joint"],  # Add roll hip joint
+            -0.2,
+            [".*_pitch_hip_joint"],
         )
         self.rewards.create_joint_deviation_l1_rewterm(
             "joint_deviation_ankle_l1",
-            -0.1,
+            -0.2,
             [".*_pitch_ankle_joint", ".*_roll_ankle_joint"],
         )
         self.rewards.joint_acc_l2.weight = -1.25e-7
