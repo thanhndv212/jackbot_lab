@@ -42,7 +42,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.base_height_exp.weight = -1.5
         self.rewards.base_height_exp.params["target_height"] = 0.828
         self.rewards.base_height_exp.params["std"] = 0.2
-        self.rewards.body_lin_acc_l2.weight = -0.3
+        self.rewards.body_lin_acc_l2.weight = 0.0
 
         # Joint penalties (minimal for clock-based walking)
         self.rewards.create_joint_deviation_l1_rewterm(
@@ -122,8 +122,8 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.feet_air_time.params["threshold"] = 0.4
         self.rewards.feet_contact.weight = -0.3
         self.rewards.feet_slide_exp.weight = -0.5
-        self.rewards.knee_keep_distance.weight = -0.2
-        self.rewards.feet_keep_distance.weight = -0.2
+        self.rewards.knee_keep_distance.weight = 0.0
+        self.rewards.feet_keep_distance.weight = 0.0
         self.rewards.right_foot_orientaion.weight = 0.0
         self.rewards.left_foot_orientaion.weight = 0.0
 
@@ -133,7 +133,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.leg_coordination.weight = 0.6
 
         # Gait symmetry and step length (essential for walking)
-        self.rewards.gait_symmetry.weight = 0.5
+        self.rewards.gait_symmetry.weight = 0.0
         self.rewards.step_length.weight = 0.4
         self.rewards.step_length.params["target_step_length"] = 0.4
         self.rewards.step_length.params["min_step_length"] = 0.2
