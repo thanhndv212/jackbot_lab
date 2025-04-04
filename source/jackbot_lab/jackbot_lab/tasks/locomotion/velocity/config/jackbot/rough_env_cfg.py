@@ -215,6 +215,43 @@ class JackbotRewardsCfg(RewardsCfg):
         },
     )
 
+    # New gait-specific reward terms
+    air_time_balance = RewTerm(
+        func=mdp.feet_air_time_balance,
+        weight=0.0,
+        params={
+            "sensor_cfg": SceneEntityCfg("contact_forces", body_names=["foot.*"]),
+            "threshold": 0.4,
+        },
+    )
+
+    feet_alignment = RewTerm(
+        func=mdp.feet_body_alignment,
+        weight=0.0,
+        params={
+            "asset_cfg": SceneEntityCfg("robot", body_names=["foot.*"]),
+            "max_offset": 0.3,
+        },
+    )
+
+    gait_consistency = RewTerm(
+        func=mdp.gait_phase_consistency,
+        weight=0.0,
+        params={
+            "sensor_cfg": SceneEntityCfg("contact_forces", body_names=["foot.*"]),
+            "history_length": 10,
+        },
+    )
+
+    velocity_consistency = RewTerm(
+        func=mdp.body_velocity_consistency,
+        weight=0.0,
+        params={
+            "asset_cfg": SceneEntityCfg("robot"),
+            "window_size": 5,
+        },
+    )
+
 
 @configclass
 class JackbotRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
@@ -339,9 +376,3 @@ class JackbotRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         self.commands.base_velocity.ranges.lin_vel_x = (0.0, 1.0)
         self.commands.base_velocity.ranges.lin_vel_y = (0.0, 0.0)
         self.commands.base_velocity.ranges.ang_vel_z = (-1.0, 1.0)
-
-        # New gait-specific rewards
-        self.rewards.air_time_balance = 0.5  # Reward balanced air time between feet
-        self.rewards.feet_alignment = 0.4    # Reward proper alignment of feet relative to body
-        self.rewards.gait_consistency = 0.4  # Reward consistent gait phase across steps
-        self.rewards.velocity_consistency = 0.3  # Reward consistent body velocity over window

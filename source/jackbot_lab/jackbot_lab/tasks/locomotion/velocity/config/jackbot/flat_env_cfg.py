@@ -41,7 +41,6 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.flat_orientation_l2.weight = -0.6
         self.rewards.base_height_exp.weight = -1.5
         self.rewards.base_height_exp.params["target_height"] = 0.828
-        self.rewards.base_height_exp.params["std"] = 0.2
         self.rewards.body_lin_acc_l2.weight = 0.0
 
         # Joint penalties (minimal for clock-based walking)
@@ -165,10 +164,10 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.knee_extension.params["position_range"] = 15.0 * deg_to_rad
 
         # New gait-specific rewards with higher weights for flat terrain
-        self.rewards.air_time_balance = 0.6  # Reward balanced air time between feet
-        self.rewards.feet_alignment = 0.5    # Reward proper alignment of feet relative to body
-        self.rewards.gait_consistency = 0.5  # Reward consistent gait phase across steps
-        self.rewards.velocity_consistency = 0.4  # Reward consistent body velocity over window
+        self.rewards.air_time_balance.weight = 0.6
+        self.rewards.feet_alignment.weight = 0.5
+        self.rewards.gait_consistency.weight = 0.5
+        self.rewards.velocity_consistency.weight = 0.4
 
         # ------------------------------Commands------------------------------
         self.commands.base_velocity.ranges.lin_vel_x = (0.0, 1.0)
