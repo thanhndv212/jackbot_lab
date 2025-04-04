@@ -166,8 +166,6 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         # New gait-specific rewards with higher weights for flat terrain
         self.rewards.air_time_balance.weight = 0.6
         self.rewards.feet_alignment.weight = 0.5
-        self.rewards.gait_consistency.weight = 0.5
-        self.rewards.velocity_consistency.weight = 0.4
 
         # ------------------------------Commands------------------------------
         self.commands.base_velocity.ranges.lin_vel_x = (0.0, 1.0)

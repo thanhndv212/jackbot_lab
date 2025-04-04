@@ -234,24 +234,6 @@ class JackbotRewardsCfg(RewardsCfg):
         },
     )
 
-    gait_consistency = RewTerm(
-        func=mdp.gait_phase_consistency,
-        weight=0.0,
-        params={
-            "sensor_cfg": SceneEntityCfg("contact_forces", body_names=["foot.*"]),
-            "history_length": 10,
-        },
-    )
-
-    velocity_consistency = RewTerm(
-        func=mdp.body_velocity_consistency,
-        weight=0.0,
-        params={
-            "asset_cfg": SceneEntityCfg("robot"),
-            "window_size": 5,
-        },
-    )
-
 
 @configclass
 class JackbotRoughEnvCfg(LocomotionVelocityRoughEnvCfg):

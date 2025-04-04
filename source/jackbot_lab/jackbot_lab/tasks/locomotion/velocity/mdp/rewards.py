@@ -544,37 +544,3 @@ def feet_body_alignment(
     # Combine offsets
     total_offset = torch.maximum(left_offset, right_offset)
     return exp_normalize(total_offset, std=max_offset)
-
-
-def gait_phase_consistency(
-    env: ManagerBasedRLEnv,
-    sensor_cfg: SceneEntityCfg,
-    history_length: int = 10
-) -> torch.Tensor:
-    """Reward for consistent gait phase between steps."""
-    contact_sensor: ContactSensor = env.scene.sensors[sensor_cfg.name]
-    
-    # Get contact history
-    contact_history = contact_sensor.data.contact_history[:, -history_length:]
-    left_contacts = contact_history[:, :, 0]  # left foot contacts
-    right_contacts = contact_history[:, :, 1]  # right foot contacts
-    
-    # Calculate phase difference
-    phase_diff = torch.abs(
-        torch.sum(left_contacts, dim=1) - torch.sum(right_contacts, dim=1)
-    )
-    return exp_normalize(phase_diff, std=2.0)
-
-
-def body_velocity_consistency(
-    env: ManagerBasedRLEnv,
-    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
-    window_size: int = 5
-) -> torch.Tensor:
-    """Penalize large variations in body velocity."""
-    asset = env.scene[asset_cfg.name]
-    vel_history = asset.data.root_lin_vel_w_history[:, -window_size:, 0]  # x-velocity
-    
-    # Calculate velocity variation
-    vel_std = torch.std(vel_history, dim=1)
-    return exp_normalize(vel_std, std=0.2)
