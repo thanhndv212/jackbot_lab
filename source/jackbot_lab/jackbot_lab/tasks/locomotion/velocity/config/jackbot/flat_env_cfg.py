@@ -27,19 +27,19 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
 
         # ------------------------------Rewards------------------------------
         # General
-        self.rewards.is_terminated.weight = -200
+        self.rewards.is_terminated.weight = -200.0
 
         # Velocity-tracking rewards (essential for walking)
-        self.rewards.track_lin_vel_xy_exp.weight = 1.2
+        self.rewards.track_lin_vel_xy_exp.weight = 5.0
         self.rewards.track_lin_vel_xy_exp.params["std"] = 0.5
-        self.rewards.track_ang_vel_z_exp.weight = 0.6
+        self.rewards.track_ang_vel_z_exp.weight = 2.0
         self.rewards.track_ang_vel_z_exp.params["std"] = 0.5
 
         # Root penalties (essential for stability)
         self.rewards.lin_vel_z_l2.weight = -0.8
         self.rewards.ang_vel_xy_l2.weight = -0.6
-        self.rewards.flat_orientation_l2.weight = -0.6
-        self.rewards.base_height_exp.weight = -1.5
+        self.rewards.flat_orientation_l2.weight = -5.0
+        self.rewards.base_height_exp.weight = -2.000000000000001
         self.rewards.base_height_exp.params["target_height"] = 0.828
         self.rewards.body_lin_acc_l2.weight = 0.0
 
@@ -59,7 +59,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
                 ".*_ankle_.*",
             ],
         )
-        self.rewards.joint_torques_l2.weight = -1.5e-7
+        self.rewards.joint_torques_l2.weight = -1.5e-07
         self.rewards.joint_torques_l2.params["asset_cfg"] = SceneEntityCfg(
             "robot",
             joint_names=[
@@ -90,11 +90,11 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.action_rate_l2.weight = -0.005
 
         # Contact sensor
-        self.rewards.undesired_contacts.weight = 0
-        self.rewards.contact_forces.weight = 0
+        self.rewards.undesired_contacts.weight = 0.0
+        self.rewards.contact_forces.weight = 0.0
 
         # Feet rewards (essential for clock-based walking)
-        self.rewards.feet_air_time.weight = 1.0
+        self.rewards.feet_air_time.weight = 2.0
         self.rewards.feet_air_time.params["threshold"] = 0.4
         self.rewards.feet_contact.weight = -0.3
         self.rewards.feet_slide_exp.weight = -0.5
@@ -109,7 +109,7 @@ class JackbotFlatEnvCfg(JackbotRoughEnvCfg):
         self.rewards.leg_coordination.weight = 0.6
 
         # Gait symmetry and step length (essential for walking)
-        self.rewards.gait_symmetry.weight = 0.0
+        self.rewards.gait_symmetry.weight = 0.5
         self.rewards.step_length.weight = 0.4
         self.rewards.step_length.params["target_step_length"] = 0.4
         self.rewards.step_length.params["min_step_length"] = 0.2

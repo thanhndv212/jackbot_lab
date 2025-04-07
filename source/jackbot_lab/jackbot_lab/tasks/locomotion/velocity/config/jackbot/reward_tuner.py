@@ -310,11 +310,18 @@ def main():
         max_iterations = st.number_input(
             "Max Iterations", value=1000, min_value=100, step=100
         )
+        experiment_name = st.text_input(
+            "Experiment Name", value="jackbot_velocity"
+        )
+        run_name = st.text_input("Run Name", value="run_1")
 
     with train_col2:
         headless = st.checkbox("Headless Mode", value=True)
         resume = st.checkbox("Resume Training", value=False)
         resume_path = st.text_input("Resume Path", value="")
+        logger = st.selectbox(
+            "Logger", options=["tensorboard", "wandb", "neptune"], index=0
+        )
 
     # Playback options
     st.subheader("Playback Options")
@@ -322,10 +329,19 @@ def main():
 
     with play_col1:
         checkpoint_path = st.text_input("Checkpoint Path", value="")
+        play_experiment_name = st.text_input(
+            "Playback Experiment Name", value="jackbot_velocity"
+        )
+        play_run_name = st.text_input("Playback Run Name", value="run_1")
 
     with play_col2:
         play_headless = st.checkbox("Playback Headless", value=False)
         record = st.checkbox("Record Playback", value=False)
+        play_logger = st.selectbox(
+            "Playback Logger",
+            options=["tensorboard", "wandb", "neptune"],
+            index=0,
+        )
 
     # Run buttons
     col1, col2 = st.columns(2)
@@ -370,6 +386,12 @@ def main():
                     str(num_envs),
                     "--max_iterations",
                     str(max_iterations),
+                    "--experiment_name",
+                    experiment_name,
+                    "--run_name",
+                    run_name,
+                    "--logger",
+                    logger,
                 ]
 
                 if headless:
@@ -439,6 +461,12 @@ def main():
                         task_name,
                         "--checkpoint",
                         checkpoint_path,
+                        "--experiment_name",
+                        play_experiment_name,
+                        "--run_name",
+                        play_run_name,
+                        "--logger",
+                        play_logger,
                     ]
 
                     if play_headless:
