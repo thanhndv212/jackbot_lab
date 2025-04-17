@@ -3,11 +3,37 @@ import subprocess
 import sys
 from pathlib import Path
 import time
+import importlib.util
+import pkg_resources
+
+
+def get_config_path():
+    """Get the config file path from the installed package"""
+    try:
+        # First try to find the package in development mode
+        spec = importlib.util.find_spec('jackbot_lab')
+        if spec is not None and spec.origin is not None:
+            package_root = Path(spec.origin).parent
+            config_path = package_root / "tasks" / "locomotion" / "velocity" / "config" / "jackbot" / "flat_env_cfg.py"
+            if config_path.exists():
+                return config_path
+        
+        # Fallback to installed package location
+        dist = pkg_resources.working_set.by_key['jackbot_lab']
+        package_path = Path(dist.location) / "jackbot_lab"
+        return package_path / "tasks" / "locomotion" / "velocity" / "config" / "jackbot" / "flat_env_cfg.py"
+    except Exception as e:
+        st.error(f"Could not find config file: {e}")
+        return None
 
 
 def load_current_weights():
     """Load current weights from flat_env_cfg.py"""
-    config_path = Path(__file__).parent / "flat_env_cfg.py"
+    config_path = get_config_path()
+    if config_path is None:
+        st.error("Config file not found. Please ensure jackbot_lab package is installed correctly.")
+        return {}
+        
     weights = {}
 
     with open(config_path, "r") as f:
@@ -26,7 +52,7 @@ def load_current_weights():
 
 def save_weights(weights):
     """Save weights back to flat_env_cfg.py"""
-    config_path = Path(__file__).parent / "flat_env_cfg.py"
+    config_path = get_config_path()
 
     with open(config_path, "r") as f:
         content = f.read()
@@ -50,13 +76,9 @@ def save_weights(weights):
 def run_command(command, args, output_placeholder):
     """Run a command with the given arguments in a separate terminal"""
     try:
-        # Get the base directory (source/jackbot_lab)
-        base_dir = Path(__file__).parent.parent.parent.parent.parent
-
-        # Get the scripts directory
-        scripts_dir = Path(
-            "/home/thanh-nguyen/develop/jackbot_lab/scripts/rsl_rl"
-        )
+        # Get the scripts directory relative to this file
+        scripts_dir = Path(__file__).parent
+        base_dir = scripts_dir.parent.parent
 
         # Determine which script to run
         if "train.py" in command:
